@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     {
         Pad = new DSPad(PlayerIndex);
         GameObject GO = Instantiate(CharPrefab);
+        GO.transform.SetParent(this.transform);
         GO.GetComponent<PlayerCharacter>().Initialize(this);
     }
 
@@ -25,6 +27,11 @@ public class PlayerController : MonoBehaviour
     public void PushBehaviour(DSPad.DSPadBehaviour NewBehaviour)
     {
         Pad.SetBehaviour(NewBehaviour);
+    }
+
+    internal void BehaviourGoBack()
+    {
+        Pad.BehaviourGoBack();
     }
 }
 
