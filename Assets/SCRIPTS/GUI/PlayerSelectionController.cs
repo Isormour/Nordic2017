@@ -19,8 +19,11 @@ public class PlayerSelectionController : MonoBehaviour {
     public PlayerData[] players;
     public GameObject[] selectors;
     public GameObject[] positions;
-    public int max_selections;
+    int max_selections;
     public int max_players;
+    public int active_players;
+
+    public int locked_players;
 
     public string start_input_label = "start";
     public string horizontal_input_label = "Horizontal";
@@ -46,6 +49,8 @@ public class PlayerSelectionController : MonoBehaviour {
         }
 
         max_selections = positions.Length;
+
+        locked_players = 0;
     }
     
     // Update is called once per frame
@@ -87,6 +92,12 @@ public class PlayerSelectionController : MonoBehaviour {
                         players[i].made_choice = true;
                         //disable selector
                         //selectors[i].SetActive(false);
+
+                        locked_players += 1;
+                        if (locked_players == active_players)
+                        {
+                            GuiController.Instance.StartGame();
+                        }
                     }
                 }
             }
@@ -99,6 +110,8 @@ public class PlayerSelectionController : MonoBehaviour {
                 //if player pressed start make him active
                 players[i].active = true;
                 selectors[i].SetActive(true);
+                
+                active_players += 1;
             }
 
         }

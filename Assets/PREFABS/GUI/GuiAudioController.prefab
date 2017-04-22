@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224493331817917110}
   - component: {fileID: 114579904032700788}
   - component: {fileID: 82226070147719226}
+  - component: {fileID: 114798010088554616}
   m_Layer: 5
   m_Name: GuiAudioController
   m_TagString: Untagged
@@ -121,6 +122,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   start: {fileID: 8300000, guid: 478f0f25e3fba3d48aad24d5717dc098, type: 3}
   button: {fileID: 8300000, guid: 5d77bf848cdfd2a4f958589c48edd05b, type: 3}
+--- !u!114 &114798010088554616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1991194459200934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13caded19211b8748a93c66a5572ccf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &224493331817917110
 RectTransform:
   m_ObjectHideFlags: 1

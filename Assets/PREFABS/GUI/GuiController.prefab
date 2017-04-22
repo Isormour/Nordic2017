@@ -9,57 +9,54 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1627775180264286}
+  m_RootGameObject: {fileID: 1489892875486410}
   m_IsPrefabParent: 1
---- !u!1 &1627775180264286
+--- !u!1 &1489892875486410
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224427761337661364}
-  - component: {fileID: 114367453169181324}
+  - component: {fileID: 224930468767996060}
+  - component: {fileID: 114562950293413324}
+  - component: {fileID: 114900371363360690}
   m_Layer: 5
-  m_Name: PlayerSelectionController
+  m_Name: GuiController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114367453169181324
+--- !u!114 &114562950293413324
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1627775180264286}
+  m_GameObject: {fileID: 1489892875486410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a61c1aa9ee66a24caa13f382e72ce55, type: 3}
+  m_Script: {fileID: 11500000, guid: 797651567a4507f4e9f3c588bf9249a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input_delay: 0.2
-  selectors:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  positions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  max_players: 1
-  start_input_label: Start
-  horizontal_input_label: Horizontal
-  action_input_label: Action
---- !u!224 &224427761337661364
+--- !u!114 &114900371363360690
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1489892875486410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13caded19211b8748a93c66a5572ccf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &224930468767996060
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1627775180264286}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1489892875486410}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -68,6 +65,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 950, y: 540}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -17,8 +17,6 @@ public class GuiAudioController : MonoBehaviour {
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
     }
 	
 	public void game_starting()	{
