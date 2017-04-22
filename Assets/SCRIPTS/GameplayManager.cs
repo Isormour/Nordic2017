@@ -20,11 +20,6 @@ public class GameplayManager : MonoBehaviour
             SpawnPoints = new List<Vector3>();
             DontDestroyOnLoad(this.gameObject);
 
-            Transform SpawnPointsContainer = transform.FindChild("SpawnPoints");
-            for (int i = 0; i < SpawnPointsContainer.childCount; i++)
-            {
-                SpawnPoints.Add(SpawnPointsContainer.GetChild(i).position);
-            }
         }
         else
         {
@@ -32,6 +27,20 @@ public class GameplayManager : MonoBehaviour
             Characters.Clear();
         }
     }
+
+    void Start()
+    {
+        // searching for other objects moved to Start()
+        Transform SpawnPointsContainer = transform.FindChild("SpawnPoints");
+        for (int i = 0; i < SpawnPointsContainer.childCount; i++)
+        {
+            SpawnPoints.Add(SpawnPointsContainer.GetChild(i).position);
+        }
+
+        StartCoroutine(StartCounting());
+
+    }
+
     public void AddCharacter(PlayerCharacter CharacterInGameplay)
     {
         Characters.Add(CharacterInGameplay);
@@ -47,11 +56,6 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        StartCoroutine(StartCounting());
-
-    }
     void Endgame()
     {
         StartCoroutine(StartCounting());
@@ -66,6 +70,10 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButton("Cancel"))
+        {
+            GuiController.Instance.MainMenu();
+        }
 
     }
     public IEnumerator StartCounting()

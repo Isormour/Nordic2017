@@ -4,7 +4,6 @@ using UnityEngine;
 using GamepadInput;
 public class GameManager : MonoBehaviour
 {
-
     // Use this for initialization
     PlayerController[] PlayerControllers;
     void Start()
@@ -15,11 +14,5 @@ public class GameManager : MonoBehaviour
             PlayerControllers[i].Initialize();
         }
         Debug.Log("Game Manager");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
