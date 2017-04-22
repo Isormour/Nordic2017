@@ -12,9 +12,10 @@ public class GameManager : MonoBehaviour
         PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
         for (int i = 0; i < PlayerControllers.Length; i++)
         {
-            PlayerControllers.Initialize();
-        }
+            PlayerControllers[i].Initialize();
 
+        }
+        Debug.Log("Game Manager");
     }
 
     // Update is called once per frame

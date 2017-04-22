@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
+    public delegate void PlayerDeath(PlayerCharacter DeadPlayer);
+    public event PlayerDeath OnPlayerDeath;
 
     PlayerController Player;
-    DSPad.DSPadBehaviour CharBehaviour;
+    DSPad.DSPadBehaviour InGameBehaviour;
+    DSPad.DSPadBehaviour LockedBehaviour;
     float Speed = 130.1f;
     float DashForce = 40.0f;
     Rigidbody CharacterRigid;
@@ -23,6 +26,8 @@ public class PlayerCharacter : MonoBehaviour
         CharacterRigid = GetComponent<Rigidbody>();
         IsDashLocked = false;
         IsDashing = false;
+        GameplayManager.Singleton.AddCharacter(this);
+        transform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,18 +39,30 @@ public class PlayerCharacter : MonoBehaviour
     public void Initialize(PlayerController playerController)
     {
         Player = playerController;
-        CharBehaviour = new DSPad.DSPadBehaviour();
-        CharBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, LeftStick);
-        CharBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, ButtonADown);
-        CharBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.B, EButtonState.down, ButtonBDown);
-        Player.PushBehaviour(CharBehaviour);
+        InGameBehaviour = new DSPad.DSPadBehaviour();
+        InGameBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, MoveByStick);
+        InGameBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, ButtonADown);
+        InGameBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.B, EButtonState.down, ButtonBDown);
+        Player.PushBehaviour(InGameBehaviour);
+
+
+        LockedBehaviour = new DSPad.DSPadBehaviour();
+        LockedBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, LookByStick);
+        Player.PushBehaviour(LockedBehaviour);
+
         Debug.Log("Initialized");
+
 
     }
 
     internal void OnEnterChestRange(Chest chest)
     {
         CurrentChest = chest;
+    }
+
+    internal void OnGameStarted()
+    {
+        Player.PushBehaviour(InGameBehaviour);
     }
 
     internal void OnExitChestRange(Chest chest)
@@ -59,9 +76,11 @@ public class PlayerCharacter : MonoBehaviour
         {
             transform.gameObject.GetComponent<MeshRenderer>().enabled = false;
             transform.GetComponent<BoxCollider>().enabled = false;
-            DSPad.DSPadBehaviour beh = new DSPad.DSPadBehaviour();
-            Player.PushBehaviour(beh);
-            StartCoroutine(RespCorr());
+            //StartCoroutine(RespCorr());
+            if (OnPlayerDeath != null)
+            {
+                OnPlayerDeath(this);
+            }
         }
         PlayerCharacter OtherPlayer = collision.gameObject.GetComponent<PlayerCharacter>();
         if (OtherPlayer)
@@ -69,26 +88,39 @@ public class PlayerCharacter : MonoBehaviour
             if (IsDashing)
             {
                 IsDashing = false;
-                OtherPlayer.GetComponent<Rigidbody>().AddForce(this.transform.forward * DashForce*1.1f,ForceMode.Impulse);
+                OtherPlayer.GetComponent<Rigidbody>().AddForce(this.transform.forward * DashForce * 1.3f, ForceMode.Impulse);
             }
         }
     }
 
+    internal void ResetChar()
+    {
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        Respawn();
+        Player.PushBehaviour(LockedBehaviour);
+    }
+
 
     #region BehaviourDelegates
-    void LeftStick(Vector2 AxisVect)
+    void MoveByStick(Vector2 AxisVect)
     {
         if (AxisVect.magnitude > 0)
         {
-
             Vector3 SpeedVect = new Vector3(AxisVect.x, 0, AxisVect.y);
             CharacterRigid.AddForce(SpeedVect * Speed);
 
             Vector3 lookPosition = this.transform.position + SpeedVect;
             this.transform.LookAt(lookPosition);
-
         }
-
+    }
+    void LookByStick(Vector2 AxisVect)
+    {
+        if (AxisVect.magnitude > 0)
+        {
+            Vector3 SpeedVect = new Vector3(AxisVect.x, 0, AxisVect.y);
+            Vector3 lookPosition = this.transform.position + SpeedVect;
+            this.transform.LookAt(lookPosition);
+        }
     }
     public void OnEnterPickableAxe(Axe axeToPickup)
     {
@@ -105,10 +137,14 @@ public class PlayerCharacter : MonoBehaviour
     public IEnumerator RespCorr()
     {
         yield return new WaitForSeconds(5);
-        transform.gameObject.GetComponent<MeshRenderer>().enabled = false;
-        transform.GetComponent<BoxCollider>().enabled = false;
-        Player.BehaviourGoBack();
+        Respawn();
+    }
+    void Respawn()
+    {
         transform.gameObject.SetActive(true);
+        transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        transform.GetComponent<BoxCollider>().enabled = true;
+      
     }
     private void ButtonBDown(EButtonState buttonState)
     {
@@ -133,7 +169,7 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
         IsDashLocked = false;
-       
+
     }
 
     private void ButtonADown(EButtonState buttonState)
@@ -162,14 +198,15 @@ public class PlayerCharacter : MonoBehaviour
                 CurrentAxe.Throw();
                 CurrentAxe.transform.localPosition += this.transform.forward;
                 CurrentAxe.transform.rotation = this.transform.rotation;
-
                 CurrentAxe = null;
+
+                
+                CharacterRigid.AddForce(-this.transform.forward * DashForce * 2.0f, ForceMode.Impulse);
             }
             else
             {
                 CurrentAxe.Pickup(this.transform);
             }
-
         }
     }
     #endregion

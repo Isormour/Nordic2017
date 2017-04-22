@@ -15,7 +15,7 @@ public class Axe : MonoBehaviour
     BoxCollider Collider;
     MeshRenderer Renderer;
     Coroutine LifeTimeCorr;
-
+    Transform Model;
     Transform owner;
     // Use this for initialization
     void Start()
@@ -27,12 +27,14 @@ public class Axe : MonoBehaviour
         Collider = GetComponent<BoxCollider>();
         Renderer = GetComponent<MeshRenderer>();
         Collider.enabled = false;
+        Model = transform.FindChild("Model");
     }
     // Update is called once per frame
     void Update()
     {
         if (Throwed)
         {
+            Model.transform.Rotate(new Vector3(0, 0, 15));
             this.transform.position += this.transform.forward * Speed;
         }
     }
@@ -49,7 +51,7 @@ public class Axe : MonoBehaviour
         {
             Init();
             transform.SetParent(DwarfTransform);
-            transform.localPosition = new Vector3(0, 0, 0.5f);
+            transform.localPosition = new Vector3(0, 0, 1.5f);
             Renderer.enabled = true;
             owner = DwarfTransform;
         }
@@ -61,7 +63,7 @@ public class Axe : MonoBehaviour
         owner = null;
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.isTrigger = false;
-        // Debug.LogError("Implement Throw physics");
+        //Debug.LogError("Implement Throw physics");
         transform.SetParent(null);
         LifeTimeCorr = StartCoroutine(TimetoDestroyCorr());
     }
