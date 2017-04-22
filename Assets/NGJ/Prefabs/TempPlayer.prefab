@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65452083334994236}
   - component: {fileID: 23415527960692990}
   - component: {fileID: 114307810888322574}
+  - component: {fileID: 54564882491241340}
   m_Layer: 0
   m_Name: TempPlayer
   m_TagString: Untagged
@@ -82,6 +83,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1136401934494422}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54564882491241340
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1136401934494422}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 10.39
+  m_AngularDrag: 0.11
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!65 &65452083334994236
 BoxCollider:
   m_ObjectHideFlags: 1
