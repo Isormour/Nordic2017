@@ -59,5 +59,15 @@ public class GuiController : MonoBehaviour
         Application.Quit();
     }
 
+    public void VictoryScreen()
+    {
+        StartCoroutine("CorrVictoryScreen");
+    }
+    IEnumerator CorrVictoryScreen()
+    {
+        GuiAudioController.Instance.game_starting();
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene("VictoryScreen");
+    }
 
 }

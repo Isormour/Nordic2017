@@ -19,7 +19,7 @@ public class PlayerSelectionController : MonoBehaviour {
     public PlayerData[] players;
     public GameObject[] selectors;
     public GameObject[] positions;
-    int max_selections;
+    public int max_selections;
     public int max_players;
     public int active_players;
 
@@ -32,6 +32,12 @@ public class PlayerSelectionController : MonoBehaviour {
     // Use this for initialization
     void Awake()
     {
+        // disable selectors
+        for (int i = 0; i < selectors.Length; i++)
+        {
+            selectors[i].SetActive(false);
+        }
+
         // initialize players
         players = new PlayerData[max_players];
         for (int i = 0; i < max_players; i++)
@@ -42,11 +48,14 @@ public class PlayerSelectionController : MonoBehaviour {
             players[i].active = false;
             players[i].made_choice = false;
 
-            selectors[i].SetActive(false);
-
             Debug.Log(start_input_label + players[i].player_id);
             Debug.Log(players[i].selection_id);
         }
+
+        //make player 0 active
+        //players[0].selection_id = 0;
+        //players[0].active = true;
+        ActivatePlayer(0);
 
         max_selections = positions.Length;
 
@@ -108,10 +117,7 @@ public class PlayerSelectionController : MonoBehaviour {
                 Debug.Log("Player selection_id:" + players[i].selection_id);
 
                 //if player pressed start make him active
-                players[i].active = true;
-                selectors[i].SetActive(true);
-                
-                active_players += 1;
+                ActivatePlayer(i);
             }
 
         }
@@ -121,6 +127,13 @@ public class PlayerSelectionController : MonoBehaviour {
     {
         Debug.Log("updating position: player:" + player+ ", position:" + position);
         selectors[player].transform.position = positions[position].transform.position;
+    }
+
+    private void ActivatePlayer(int player_id)
+    {
+        players[player_id].active = true;
+        selectors[player_id].SetActive(true);
+        active_players += 1;
     }
 
 }
