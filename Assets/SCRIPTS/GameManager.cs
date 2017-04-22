@@ -5,6 +5,21 @@ using GamepadInput;
 public class GameManager : MonoBehaviour
 {
     // Use this for initialization
+    public static GameManager Singleton;
+
+    private void Awake()
+    {
+        if (Singleton == null)
+        {
+            Singleton = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     PlayerController[] PlayerControllers;
     void Start()
     {

@@ -14,7 +14,7 @@ public class Chest : MonoBehaviour
     List<PlayerCharacter> PlayersInRange;
     public bool DebugMaterialChanger;
     bool IsOpen;
-
+    Animator Anim;
     internal void Init()
     {
         PlayersInRange = new List<PlayerCharacter>();
@@ -28,6 +28,7 @@ public class Chest : MonoBehaviour
         {
             Debug.LogError("Marker Should Exist");
         }
+        Anim = GetComponentInChildren<Animator>();
     }
 
     Transform Marker;
@@ -74,27 +75,28 @@ public class Chest : MonoBehaviour
         SoundManager.CreateSound(ChestOpen, 0.5f);
 
         IsOpen = true;
-        Marker.gameObject.SetActive(true);
+        //Marker.gameObject.SetActive(true);
 
         if (HaveAxe)
         {
             Marker.GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
 
-            if (OnAxeFound != null)
-            {
-                OnAxeFound();
-            }
+            GameObject AxeOB = Instantiate(AxePrefab) as GameObject;
+            AxeOB.transform.position = this.transform.position + (this.transform.forward*2);
+         
         }
         else
         {
             Marker.GetComponent<MeshRenderer>().material.color = new Color(0.8f, 0.2f, 0.2f);
         }
+        Anim.SetInteger("AnimationState", 1);
         return HaveAxe;
     }
     public void CloseChest()
     {
         IsOpen = false;
         Marker.gameObject.SetActive(false);
+        Anim.SetInteger("AnimationState", 0);
     }
     public Axe PickupAxe(PlayerCharacter PlayerChar)
     {

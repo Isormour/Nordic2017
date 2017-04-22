@@ -20,13 +20,14 @@ public class Axe : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        Debug.Log("Axe");
     }
     public void Init()
     {
         Collider = GetComponent<BoxCollider>();
         Renderer = transform.Find("Model").GetComponent<MeshRenderer>();
         Collider.enabled = false;
+        Collider.isTrigger = true;
         Model = transform.FindChild("Model");
     }
     // Update is called once per frame
@@ -55,6 +56,7 @@ public class Axe : MonoBehaviour
             Renderer.enabled = true;
             owner = DwarfTransform;
             Model.transform.localRotation =Quaternion.Euler (new Vector3(-90, 0, 130));
+            if (LifeTimeCorr != null) StopCoroutine(LifeTimeCorr);
         }
     }
     public void Throw()

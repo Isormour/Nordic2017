@@ -36,8 +36,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip VoiceTwo;
     public AudioClip VoiceThree;
     public AudioClip voiceTrippleKill;
-
     public AudioClip VoiceMassacre;
+
+    public AudioClip DwarfCollision;
+    public AudioClip DwarfStunned;
 
 
     void Awake()

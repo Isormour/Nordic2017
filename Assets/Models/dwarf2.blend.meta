@@ -1,0 +1,299 @@
+fileFormatVersion: 2
+guid: b3ed24b5b0211b244be6adf7139483fe
+timeCreated: 1492862959
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Bone_body
+    100004: Bone_hand_L
+    100006: Bone_hand_R
+    100008: Bone_head
+    100010: Bone_leg_L
+    100012: Bone_leg_R
+    100014: dwarf
+    100016: //RootNode
+    100018: dwarf_head
+    100020: dwarf_helm
+    100022: hand_left
+    100024: hand_right
+    100026: leg_left
+    100028: leg_right
+    400000: Armature
+    400002: Bone_body
+    400004: Bone_hand_L
+    400006: Bone_hand_R
+    400008: Bone_head
+    400010: Bone_leg_L
+    400012: Bone_leg_R
+    400014: dwarf
+    400016: //RootNode
+    400018: dwarf_head
+    400020: dwarf_helm
+    400022: hand_left
+    400024: hand_right
+    400026: leg_left
+    400028: leg_right
+    4300000: dwarf
+    4300002: dwarf_head
+    4300004: dwarf_helm
+    4300006: leg_left
+    4300008: leg_right
+    4300010: hand_left
+    4300012: hand_right
+    7400000: Default Take
+    7400002: default
+    7400004: run
+    9500000: //RootNode
+    13700000: dwarf
+    13700002: dwarf_head
+    13700004: dwarf_helm
+    13700006: hand_left
+    13700008: hand_right
+    13700010: leg_left
+    13700012: leg_right
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: 1
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone_body
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_R
+        weight: 1
+      - path: Armature/Bone_body/Bone_head
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_R
+        weight: 1
+      - path: dwarf
+        weight: 1
+      - path: dwarf_head
+        weight: 1
+      - path: dwarf_helm
+        weight: 1
+      - path: hand_left
+        weight: 1
+      - path: hand_right
+        weight: 1
+      - path: leg_left
+        weight: 1
+      - path: leg_right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: default
+      takeName: default
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone_body
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_R
+        weight: 1
+      - path: Armature/Bone_body/Bone_head
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_R
+        weight: 1
+      - path: dwarf
+        weight: 1
+      - path: dwarf_head
+        weight: 1
+      - path: dwarf_helm
+        weight: 1
+      - path: hand_left
+        weight: 1
+      - path: hand_right
+        weight: 1
+      - path: leg_left
+        weight: 1
+      - path: leg_right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: run
+      takeName: run
+      firstFrame: -1
+      lastFrame: 102
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone_body
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_hand_R
+        weight: 1
+      - path: Armature/Bone_body/Bone_head
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_L
+        weight: 1
+      - path: Armature/Bone_body/Bone_leg_R
+        weight: 1
+      - path: dwarf
+        weight: 1
+      - path: dwarf_head
+        weight: 1
+      - path: dwarf_helm
+        weight: 1
+      - path: hand_left
+        weight: 1
+      - path: hand_right
+        weight: 1
+      - path: leg_left
+        weight: 1
+      - path: leg_right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

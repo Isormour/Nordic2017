@@ -6,28 +6,25 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     List<PlayerCharacter> Characters;
+    List<GameObject> Dummies;
     List<PlayerCharacter> AlivePlayers;
-    public static GameplayManager Singleton;
+    public static GameplayManager Sceneton;
     List<Vector3> SpawnPoints;
+    public GameObject DummyPrefab;
+
     // Use this for initialization
     private void Awake()
     {
-        if (Singleton == null)
-        {
-            Singleton = this;
-            Characters = new List<PlayerCharacter>();
-            AlivePlayers = new List<PlayerCharacter>();
-            SpawnPoints = new List<Vector3>();
-            DontDestroyOnLoad(this.gameObject);
-
-        }
-        else
-        {
-            Destroy(this.gameObject);
-            Characters.Clear();
-        }
+        Sceneton = this;
+        Characters = new List<PlayerCharacter>();
+        AlivePlayers = new List<PlayerCharacter>();
+        Dummies = new List<GameObject>();
+        SpawnPoints = new List<Vector3>();
     }
-
+    private void OnDestroy()
+    {
+        Sceneton = null;
+    }
     void Start()
     {
         // searching for other objects moved to Start()
@@ -47,12 +44,22 @@ public class GameplayManager : MonoBehaviour
         CharacterInGameplay.OnPlayerDeath += Character_OnPlayerDeath;
     }
 
-    private void Character_OnPlayerDeath(PlayerCharacter DeadPlayer)
+    private void Character_OnPlayerDeath(PlayerCharacter DeadPlayer, Axe Killer)
     {
+
         AlivePlayers.Remove(DeadPlayer);
         if (AlivePlayers.Count < 2)
         {
             Endgame();
+        }
+        GameObject Dummy = Instantiate(DummyPrefab);
+        Dummy.transform.position = DeadPlayer.transform.position;
+        Rigidbody[] RBs = Dummy.GetComponentsInChildren<Rigidbody>();
+        for (int i = 0; i < RBs.Length; i++)
+        {
+            Vector3 ForceVect = Killer.transform.forward * 10;
+            ForceVect += new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+            RBs[i].AddForce(ForceVect, ForceMode.Impulse);
         }
     }
 
@@ -72,7 +79,7 @@ public class GameplayManager : MonoBehaviour
     {
         if (Input.GetButton("Cancel"))
         {
-            GuiController.Instance.MainMenu();
+            //GuiController.Instance.MainMenu();
         }
 
     }
@@ -80,6 +87,7 @@ public class GameplayManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         ResetGame();
+        yield return new WaitForSeconds(2.0f);
         Debug.Log("3");
         AudioClip three = SoundManager.Singleton.VoiceThree;
         SoundManager.CreateSound(three, 0.7f);
@@ -105,6 +113,7 @@ public class GameplayManager : MonoBehaviour
 
     private void ResetGame()
     {
+        AlivePlayers.Clear();
         for (int i = 0; i < Characters.Count; i++)
         {
             AlivePlayers.Add(Characters[i]);

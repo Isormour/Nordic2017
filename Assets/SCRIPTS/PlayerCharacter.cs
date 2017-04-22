@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public delegate void PlayerDeath(PlayerCharacter DeadPlayer);
+    public delegate void PlayerDeath(PlayerCharacter DeadPlayer,Axe KillerAxe);
     public event PlayerDeath OnPlayerDeath;
 
     PlayerController Player;
     DSPad.DSPadBehaviour InGameBehaviour;
     DSPad.DSPadBehaviour LockedBehaviour;
     DSPad.DSPadBehaviour TotalLock;
-float Speed = 130.1f;
+    float Speed = 130.1f;
     float DashForce = 40.0f;
     Rigidbody CharacterRigid;
 
@@ -21,6 +21,10 @@ float Speed = 130.1f;
     bool IsDashing;
     bool IsPushed;
     Chest CurrentChest;
+
+    MeshRenderer MeshColor;
+
+    Animator Anim;
     // Use this for initialization
     void Start()
     {
@@ -29,8 +33,10 @@ float Speed = 130.1f;
         IsDashLocked = false;
         IsDashing = false;
         IsPushed = false;
-        GameplayManager.Singleton.AddCharacter(this);
+        GameplayManager.Sceneton.AddCharacter(this);
         transform.gameObject.SetActive(false);
+        Anim = GetComponentInChildren<Animator>();
+        MeshColor = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -79,15 +85,16 @@ float Speed = 130.1f;
         Axe axe = collision.gameObject.GetComponent<Axe>();
         if (axe)
         {
-            transform.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            //MeshColor.enabled = false;
             transform.GetComponent<BoxCollider>().enabled = false;
             //StartCoroutine(RespCorr());
             if (OnPlayerDeath != null)
             {
-                OnPlayerDeath(this);
+                OnPlayerDeath(this, axe);
             }
             AudioClip Die = SoundManager.Singleton.Die;
             SoundManager.CreateSound(Die, 0.7f);
+            this.gameObject.SetActive(false);
         }
         PlayerCharacter OtherPlayer = collision.gameObject.GetComponent<PlayerCharacter>();
         if (OtherPlayer)
@@ -96,6 +103,9 @@ float Speed = 130.1f;
             {
                 IsDashing = false;
                 OtherPlayer.Push(this.transform.forward * DashForce * 10.0f);
+
+                AudioClip DwarfCollision = SoundManager.Singleton.DwarfCollision;
+                SoundManager.CreateSound(DwarfCollision, 0.7f);
             }
         }
         Obstacle OBS = collision.gameObject.GetComponent<Obstacle>();
@@ -113,11 +123,19 @@ float Speed = 130.1f;
     }
     IEnumerator Stun()
     {
+        AudioClip DwarfStunned = SoundManager.Singleton.DwarfStunned;
+        SoundManager.CreateSound(DwarfStunned, 0.7f);
+
+        Anim.SetInteger("AnimationState", 0);
         Player.PushBehaviour(TotalLock);
-        GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 0.2f);
+        MeshColor.material.color = new Color(1.0f, 1.0f, 0.2f);
         yield return new WaitForSeconds(2.0f);
-        GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f);
+        MeshColor.material.color = new Color(1.0f, 1.0f, 1.0f);
         Player.PushBehaviour(InGameBehaviour);
+        IsPushed = false;
+        IsDashing = false;
+
+
     }
     void Push(Vector3 PushForce)
     {
@@ -147,6 +165,12 @@ float Speed = 130.1f;
 
             Vector3 lookPosition = this.transform.position + SpeedVect;
             this.transform.LookAt(lookPosition);
+            Anim.SetInteger("AnimationState", 1);
+
+        }
+        else
+        {
+            Anim.SetInteger("AnimationState", 0);
         }
     }
     void LookByStick(Vector2 AxisVect)
@@ -178,7 +202,7 @@ float Speed = 130.1f;
     void Respawn()
     {
         transform.gameObject.SetActive(true);
-        transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        //transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
         transform.GetComponent<BoxCollider>().enabled = true;
 
     }
@@ -188,14 +212,14 @@ float Speed = 130.1f;
         if (!IsDashLocked)
         {
             Debug.Log("Dash!");
-            StartCoroutine(Dash());
+           if(this.gameObject.active) StartCoroutine(Dash());
         }
     }
     IEnumerator Dash()
     {
         IsDashing = true;
         IsDashLocked = true;
-        GetComponent<MeshRenderer>().material.color = new Color(0.8f, 0.2f, 0.2f);
+        MeshColor.material.color = new Color(0.8f, 0.2f, 0.2f);
         CharacterRigid.AddForce(this.transform.forward * DashForce, ForceMode.Impulse);
         //play sound
         AudioClip DashClip = SoundManager.Singleton.Dash;
@@ -203,13 +227,13 @@ float Speed = 130.1f;
 
         yield return new WaitForSeconds(0.3f);
 
-        GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.2f, 0.8f);
+        MeshColor.material.color = new Color(0.2f, 0.2f, 0.8f);
         IsDashing = false;
 
         yield return new WaitForSeconds(3.0f);
-        GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
+        MeshColor.material.color = new Color(0.2f, 0.8f, 0.2f);
         IsDashLocked = false;
-        
+
     }
 
     private void ButtonADown(EButtonState buttonState)
@@ -226,7 +250,7 @@ float Speed = 130.1f;
                 {
                     if (CurrentChest.GetHaveAxe())
                     {
-                        CurrentAxe = CurrentChest.PickupAxe(this);
+                      //CurrentAxe = CurrentChest.PickupAxe(this);
                     }
                 }
             }
