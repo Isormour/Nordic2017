@@ -11,13 +11,15 @@ public class PlayerCharacter : MonoBehaviour
     PlayerController Player;
     DSPad.DSPadBehaviour InGameBehaviour;
     DSPad.DSPadBehaviour LockedBehaviour;
-    float Speed = 130.1f;
+    DSPad.DSPadBehaviour TotalLock;
+float Speed = 130.1f;
     float DashForce = 40.0f;
     Rigidbody CharacterRigid;
 
     Axe CurrentAxe;
     bool IsDashLocked;
     bool IsDashing;
+    bool IsPushed;
     Chest CurrentChest;
     // Use this for initialization
     void Start()
@@ -26,6 +28,7 @@ public class PlayerCharacter : MonoBehaviour
         CharacterRigid = GetComponent<Rigidbody>();
         IsDashLocked = false;
         IsDashing = false;
+        IsPushed = false;
         GameplayManager.Singleton.AddCharacter(this);
         transform.gameObject.SetActive(false);
     }
@@ -49,6 +52,8 @@ public class PlayerCharacter : MonoBehaviour
         LockedBehaviour = new DSPad.DSPadBehaviour();
         LockedBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, LookByStick);
         Player.PushBehaviour(LockedBehaviour);
+
+        TotalLock = new DSPad.DSPadBehaviour();
 
         Debug.Log("Initialized");
 
@@ -81,6 +86,8 @@ public class PlayerCharacter : MonoBehaviour
             {
                 OnPlayerDeath(this);
             }
+            AudioClip Die = SoundManager.Singleton.Die;
+            SoundManager.CreateSound(Die, 0.7f);
         }
         PlayerCharacter OtherPlayer = collision.gameObject.GetComponent<PlayerCharacter>();
         if (OtherPlayer)
@@ -88,11 +95,40 @@ public class PlayerCharacter : MonoBehaviour
             if (IsDashing)
             {
                 IsDashing = false;
-                OtherPlayer.GetComponent<Rigidbody>().AddForce(this.transform.forward * DashForce * 1.3f, ForceMode.Impulse);
+                OtherPlayer.Push(this.transform.forward * DashForce * 10.0f);
+            }
+        }
+        Obstacle OBS = collision.gameObject.GetComponent<Obstacle>();
+        if (OBS)
+        {
+            if (IsPushed)
+            {
+                StartCoroutine(Stun());
+            }
+            if (IsDashing)
+            {
+                StartCoroutine(Stun());
             }
         }
     }
-
+    IEnumerator Stun()
+    {
+        Player.PushBehaviour(TotalLock);
+        GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 0.2f);
+        yield return new WaitForSeconds(2.0f);
+        GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f);
+        Player.PushBehaviour(InGameBehaviour);
+    }
+    void Push(Vector3 PushForce)
+    {
+        IsPushed = true;
+        CharacterRigid.AddForce(PushForce);
+    }
+    IEnumerator PushCD()
+    {
+        yield return new WaitForSeconds(0.2f);
+        IsPushed = false;
+    }
     internal void ResetChar()
     {
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
@@ -144,7 +180,7 @@ public class PlayerCharacter : MonoBehaviour
         transform.gameObject.SetActive(true);
         transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
         transform.GetComponent<BoxCollider>().enabled = true;
-      
+
     }
     private void ButtonBDown(EButtonState buttonState)
     {
@@ -161,6 +197,10 @@ public class PlayerCharacter : MonoBehaviour
         IsDashLocked = true;
         GetComponent<MeshRenderer>().material.color = new Color(0.8f, 0.2f, 0.2f);
         CharacterRigid.AddForce(this.transform.forward * DashForce, ForceMode.Impulse);
+        //play sound
+        AudioClip DashClip = SoundManager.Singleton.Dash;
+        SoundManager.CreateSound(DashClip, 0.5f);
+
         yield return new WaitForSeconds(0.3f);
 
         GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.2f, 0.8f);
@@ -169,7 +209,7 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
         IsDashLocked = false;
-
+        
     }
 
     private void ButtonADown(EButtonState buttonState)
@@ -196,16 +236,21 @@ public class PlayerCharacter : MonoBehaviour
             if (CurrentAxe.transform.parent == this.transform)
             {
                 CurrentAxe.Throw();
+
+                AudioClip AxeThrow = SoundManager.Singleton.AxeThrow;
+                SoundManager.CreateSound(AxeThrow, 0.7f);
+
                 CurrentAxe.transform.localPosition += this.transform.forward;
                 CurrentAxe.transform.rotation = this.transform.rotation;
                 CurrentAxe = null;
 
-                
-                CharacterRigid.AddForce(-this.transform.forward * DashForce * 2.0f, ForceMode.Impulse);
+                CharacterRigid.AddForce(-this.transform.forward * DashForce * 1.5f, ForceMode.Impulse);
             }
             else
             {
                 CurrentAxe.Pickup(this.transform);
+                AudioClip Pickup = SoundManager.Singleton.Pickup;
+                SoundManager.CreateSound(Pickup, 0.5f);
             }
         }
     }

@@ -70,6 +70,9 @@ public class Chest : MonoBehaviour
 
     public bool OpenChest(PlayerCharacter Player)
     {
+        AudioClip ChestOpen = SoundManager.Singleton.ChestOpen;
+        SoundManager.CreateSound(ChestOpen, 0.5f);
+
         IsOpen = true;
         Marker.gameObject.SetActive(true);
 
