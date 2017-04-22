@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < PlayerControllers.Length; i++)
         {
             PlayerControllers[i].Initialize();
-
         }
         Debug.Log("Game Manager");
     }

@@ -73,11 +73,23 @@ public class GameplayManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         ResetGame();
         Debug.Log("3");
+        AudioClip three = SoundManager.Singleton.VoiceThree;
+        SoundManager.CreateSound(three, 0.7f);
+
         yield return new WaitForSeconds(1.0f);
+
+        AudioClip VoiceTwo = SoundManager.Singleton.VoiceTwo;
+        SoundManager.CreateSound(VoiceTwo, 0.7f);
         Debug.Log("2");
         yield return new WaitForSeconds(1.0f);
+
+        AudioClip One = SoundManager.Singleton.VoiceOne;
+        SoundManager.CreateSound(One, 0.7f);
         Debug.Log("1");
         yield return new WaitForSeconds(1.0f);
+
+        AudioClip VoiceGo = SoundManager.Singleton.VoiceGo;
+        SoundManager.CreateSound(VoiceGo, 0.7f);
         Debug.Log("GO");
         yield return new WaitForSeconds(0.1f);
         StartGame();

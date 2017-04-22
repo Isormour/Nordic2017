@@ -25,7 +25,7 @@ public class Axe : MonoBehaviour
     public void Init()
     {
         Collider = GetComponent<BoxCollider>();
-        Renderer = GetComponent<MeshRenderer>();
+        Renderer = transform.Find("Model").GetComponent<MeshRenderer>();
         Collider.enabled = false;
         Model = transform.FindChild("Model");
     }
@@ -54,6 +54,7 @@ public class Axe : MonoBehaviour
             transform.localPosition = new Vector3(0, 0, 1.5f);
             Renderer.enabled = true;
             owner = DwarfTransform;
+            Model.transform.localRotation =Quaternion.Euler (new Vector3(-90, 0, 130));
         }
     }
     public void Throw()
@@ -69,8 +70,12 @@ public class Axe : MonoBehaviour
     }
     IEnumerator TimetoDestroyCorr()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         Throwed = false;
+
+        AudioClip AxeGround = SoundManager.Singleton.AxeGround;
+        SoundManager.CreateSound(AxeGround, 0.5f);
+
         GetComponent<BoxCollider>().isTrigger = true;
         yield return new WaitForSeconds(3.0f);
         if (!owner)
@@ -98,6 +103,13 @@ public class Axe : MonoBehaviour
         if (dwarf)
         {
             dwarf.OnEnterPickableAxe(this);
+        }
+        Obstacle OBS = other.gameObject.GetComponent<Obstacle>();
+        if (OBS)
+        {
+            Throwed = false;
+            AudioClip AxeHit = SoundManager.Singleton.AxeHit;
+            SoundManager.CreateSound(AxeHit, 0.5f);
         }
     }
     private void OnTriggerExit(Collider other)
