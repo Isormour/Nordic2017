@@ -67,7 +67,7 @@ public class GameplayManager : MonoBehaviour
             AlivePlayers[i].OnGameStarted();
         }
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (Input.GetButton("Cancel"))
@@ -75,7 +75,12 @@ public class GameplayManager : MonoBehaviour
             GuiController.Instance.MainMenu();
         }
 
+        if (Input.GetButton("Submit"))
+        {
+            GuiController.Instance.VictoryScreen();
+        }
     }
+
     public IEnumerator StartCounting()
     {
         yield return new WaitForSeconds(1.0f);
