@@ -30,4 +30,11 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("Game Manager");
     }
+
+    public PlayerController GetFirstPlayer()
+    {
+        return PlayerControllers[0];
+    }
+
+
 }
