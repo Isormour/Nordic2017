@@ -33,6 +33,8 @@ public class PlayerCharacter : MonoBehaviour
 
     Coroutine StunCorr;
     float InitialY = 10;
+
+    public bool debugSteer = false;
     // Use this for initialization
     void Start()
     {
@@ -55,6 +57,35 @@ public class PlayerCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (debugSteer)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                ButtonADown(EButtonState.down);
+            }
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                ButtonBDown(EButtonState.down);
+            }
+            Vector2 MovementVector = new Vector2(0, 0);
+            if (Input.GetKey(KeyCode.W))
+            {
+                MovementVector += new Vector2(0, 1);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                MovementVector += new Vector2(0, -1);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                MovementVector += new Vector2(-1,0);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                MovementVector += new Vector2(1,0);
+            }
+            MoveByStick(MovementVector);
+        }
         chceckY();
     }
     void chceckY()
