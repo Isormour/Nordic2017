@@ -25,6 +25,8 @@ public class PlayerCharacter : MonoBehaviour
     MeshRenderer MeshColor;
 
     Animator Anim;
+
+    public bool debugSteer = false;
     // Use this for initialization
     void Start()
     {
@@ -37,12 +39,41 @@ public class PlayerCharacter : MonoBehaviour
         transform.gameObject.SetActive(false);
         Anim = GetComponentInChildren<Animator>();
         MeshColor = GetComponent<MeshRenderer>();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (debugSteer)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                ButtonADown(EButtonState.down);
+            }
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                ButtonBDown(EButtonState.down);
+            }
+            Vector2 MovementVector = new Vector2(0, 0);
+            if (Input.GetKey(KeyCode.W))
+            {
+                MovementVector += new Vector2(0, 1);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                MovementVector += new Vector2(0, -1);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                MovementVector += new Vector2(-1,0);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                MovementVector += new Vector2(1,0);
+            }
+            MoveByStick(MovementVector);
+        }
     }
 
     public void Initialize(PlayerController playerController)

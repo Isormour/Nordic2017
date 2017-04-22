@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-      
+
     }
     public void Initialize()
     {
@@ -22,12 +22,16 @@ public class PlayerController : MonoBehaviour
         GameObject GO = Instantiate(CharPrefab);
         GO.transform.SetParent(this.transform);
         GO.GetComponent<PlayerCharacter>().Initialize(this);
+        if (PlayerIndex == GamepadInput.GamePad.Index.Any)
+        {
+            GO.GetComponent<PlayerCharacter>().debugSteer = true;
+        }
         Initialized = true;
     }
     // Update is called once per frame
     void Update()
     {
-       if(Initialized)Pad.CheckPadInput();
+        if (Initialized) Pad.CheckPadInput();
     }
     public void PushBehaviour(DSPad.DSPadBehaviour NewBehaviour)
     {
