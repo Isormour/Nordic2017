@@ -47,8 +47,5 @@ public class MainMenuController : MonoBehaviour
     {
         GuiController.Instance.QuitGame();
     }
-
-
-
-
+    
 }
