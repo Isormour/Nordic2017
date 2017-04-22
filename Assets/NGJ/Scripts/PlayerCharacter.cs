@@ -8,18 +8,21 @@ public class PlayerCharacter : MonoBehaviour
 
     PlayerController Player;
     DSPad.DSPadBehaviour CharBehaviour;
-    float Speed = 100.1f;
+    float Speed = 130.1f;
+    float DashForce = 40.0f;
     Rigidbody CharacterRigid;
 
     Axe CurrentAxe;
-
+    bool IsDashLocked;
+    bool IsDashing;
     Chest CurrentChest;
     // Use this for initialization
     void Start()
     {
         CurrentAxe = null;
         CharacterRigid = GetComponent<Rigidbody>();
-
+        IsDashLocked = false;
+        IsDashing = false;
     }
 
     // Update is called once per frame
@@ -34,7 +37,7 @@ public class PlayerCharacter : MonoBehaviour
         CharBehaviour = new DSPad.DSPadBehaviour();
         CharBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, LeftStick);
         CharBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, ButtonADown);
-
+        CharBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.B, EButtonState.down, ButtonBDown);
         Player.PushBehaviour(CharBehaviour);
         Debug.Log("Initialized");
 
@@ -58,7 +61,16 @@ public class PlayerCharacter : MonoBehaviour
             transform.GetComponent<BoxCollider>().enabled = false;
             DSPad.DSPadBehaviour beh = new DSPad.DSPadBehaviour();
             Player.PushBehaviour(beh);
-            StartCoroutine (RespCorr());
+            StartCoroutine(RespCorr());
+        }
+        PlayerCharacter OtherPlayer = collision.gameObject.GetComponent<PlayerCharacter>();
+        if (OtherPlayer)
+        {
+            if (IsDashing)
+            {
+                IsDashing = false;
+                OtherPlayer.GetComponent<Rigidbody>().AddForce(this.transform.forward * DashForce*1.1f,ForceMode.Impulse);
+            }
         }
     }
 
@@ -78,6 +90,18 @@ public class PlayerCharacter : MonoBehaviour
         }
 
     }
+    public void OnEnterPickableAxe(Axe axeToPickup)
+    {
+        CurrentAxe = axeToPickup;
+    }
+    public void OnExitPickableAxe(Axe axeToPickup)
+    {
+        if (axeToPickup == CurrentAxe)
+        {
+            CurrentAxe = null;
+        }
+    }
+
     public IEnumerator RespCorr()
     {
         yield return new WaitForSeconds(5);
@@ -86,6 +110,32 @@ public class PlayerCharacter : MonoBehaviour
         Player.BehaviourGoBack();
         transform.gameObject.SetActive(true);
     }
+    private void ButtonBDown(EButtonState buttonState)
+    {
+        //Dash
+        if (!IsDashLocked)
+        {
+            Debug.Log("Dash!");
+            StartCoroutine(Dash());
+        }
+    }
+    IEnumerator Dash()
+    {
+        IsDashing = true;
+        IsDashLocked = true;
+        GetComponent<MeshRenderer>().material.color = new Color(0.8f, 0.2f, 0.2f);
+        CharacterRigid.AddForce(this.transform.forward * DashForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.3f);
+
+        GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.2f, 0.8f);
+        IsDashing = false;
+
+        yield return new WaitForSeconds(3.0f);
+        GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
+        IsDashLocked = false;
+       
+    }
+
     private void ButtonADown(EButtonState buttonState)
     {
         if (!CurrentAxe)
@@ -107,12 +157,19 @@ public class PlayerCharacter : MonoBehaviour
         }
         else
         {
-            CurrentAxe.Throw();
-            CurrentAxe.transform.localPosition += this.transform.forward;
-            CurrentAxe.transform.rotation = this.transform.rotation;
-     
+            if (CurrentAxe.transform.parent == this.transform)
+            {
+                CurrentAxe.Throw();
+                CurrentAxe.transform.localPosition += this.transform.forward;
+                CurrentAxe.transform.rotation = this.transform.rotation;
 
-            CurrentAxe = null;
+                CurrentAxe = null;
+            }
+            else
+            {
+                CurrentAxe.Pickup(this.transform);
+            }
+
         }
     }
     #endregion

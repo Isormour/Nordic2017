@@ -15,6 +15,8 @@ public class Axe : MonoBehaviour
     BoxCollider Collider;
     MeshRenderer Renderer;
     Coroutine LifeTimeCorr;
+
+    Transform owner;
     // Use this for initialization
     void Start()
     {
@@ -42,25 +44,66 @@ public class Axe : MonoBehaviour
     }
     public void Pickup(Transform DwarfTransform)
     {
-        Init();
-        transform.SetParent(DwarfTransform);
-        transform.localPosition = new Vector3(0, 0, 0.5f);
-        Renderer.enabled = true;
+
+        if (!owner)
+        {
+            Init();
+            transform.SetParent(DwarfTransform);
+            transform.localPosition = new Vector3(0, 0, 0.5f);
+            Renderer.enabled = true;
+            owner = DwarfTransform;
+        }
     }
     public void Throw()
     {
         Collider.enabled = true;
         Throwed = true;
-       // Debug.LogError("Implement Throw physics");
+        owner = null;
+        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        boxCollider.isTrigger = false;
+        // Debug.LogError("Implement Throw physics");
         transform.SetParent(null);
-        StartCoroutine(TimetoDestroyCorr());
+        LifeTimeCorr = StartCoroutine(TimetoDestroyCorr());
     }
     IEnumerator TimetoDestroyCorr()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(1.0f);
+        Throwed = false;
+        GetComponent<BoxCollider>().isTrigger = true;
+        yield return new WaitForSeconds(3.0f);
+        if (!owner)
+        {
+            DestroyAxe();
+        }
+        else
+        {
+            StopCoroutine(LifeTimeCorr);
+        }
+
+    }
+    private void DestroyAxe()
+    {
+        StopCoroutine(LifeTimeCorr);
         if (onAxeDestroyed != null)
         {
             onAxeDestroyed();
+        }
+        Destroy(this.gameObject);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerCharacter dwarf = other.GetComponent<PlayerCharacter>();
+        if (dwarf)
+        {
+            dwarf.OnEnterPickableAxe(this);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerCharacter dwarf = other.GetComponent<PlayerCharacter>();
+        if (dwarf)
+        {
+            dwarf.OnExitPickableAxe(this);
         }
     }
 }
