@@ -11,7 +11,7 @@ public class GameplayManager : MonoBehaviour
     public static GameplayManager Sceneton;
     List<Vector3> SpawnPoints;
     public GameObject DummyPrefab;
-
+    Dictionary<PlayerCharacter, int> Score;
     // Use this for initialization
     private void Awake()
     {
@@ -20,6 +20,7 @@ public class GameplayManager : MonoBehaviour
         AlivePlayers = new List<PlayerCharacter>();
         Dummies = new List<GameObject>();
         SpawnPoints = new List<Vector3>();
+        Score = new Dictionary<PlayerCharacter, int>();
     }
     private void OnDestroy()
     {
@@ -33,20 +34,34 @@ public class GameplayManager : MonoBehaviour
         {
             SpawnPoints.Add(SpawnPointsContainer.GetChild(i).position);
         }
-
         StartCoroutine(StartCounting());
-
     }
 
     public void AddCharacter(PlayerCharacter CharacterInGameplay)
     {
         Characters.Add(CharacterInGameplay);
         CharacterInGameplay.OnPlayerDeath += Character_OnPlayerDeath;
+        if (!Score.ContainsKey(CharacterInGameplay))
+        {
+            Score.Add(CharacterInGameplay, 0);
+        }
+    }
+
+    public Dictionary<PlayerCharacter, int> GetScore()
+    {
+        return Score;
     }
 
     private void Character_OnPlayerDeath(PlayerCharacter DeadPlayer, Axe Killer)
     {
-
+        if (Killer)
+        {
+            Score[Killer.getThrower()] += 1;
+        }
+        else
+        {
+            Score[DeadPlayer] -= 1;
+        }
         AlivePlayers.Remove(DeadPlayer);
         if (AlivePlayers.Count < 2)
         {
@@ -55,17 +70,50 @@ public class GameplayManager : MonoBehaviour
         GameObject Dummy = Instantiate(DummyPrefab);
         Dummy.transform.position = DeadPlayer.transform.position;
         Rigidbody[] RBs = Dummy.GetComponentsInChildren<Rigidbody>();
+
         for (int i = 0; i < RBs.Length; i++)
         {
-            Vector3 ForceVect = Killer.transform.forward * 10;
-            ForceVect += new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
-            RBs[i].AddForce(ForceVect, ForceMode.Impulse);
+            if (Killer)
+            {
+                Vector3 ForceVect = Killer.transform.forward * 10;
+                ForceVect += new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+                RBs[i].AddForce(ForceVect, ForceMode.Impulse);
+            }
+        }
+        if (Dummy.transform.position.y < -40)
+        {
+            Dummy.transform.gameObject.AddComponent<TimedDestroyer>().SetTime(3);
         }
     }
 
     void Endgame()
     {
-        StartCoroutine(StartCounting());
+        int PointsToEndGame = 5;
+        bool HaveSomeonePassed5Points = false;
+        for (int i = 0; i < Characters.Count; i++)
+        {
+            if (Score[Characters[i]] > PointsToEndGame)
+            {
+                HaveSomeonePassed5Points = true;
+            }
+        }
+        if (!HaveSomeonePassed5Points)
+        {
+            StartCoroutine(StartCounting());
+        }
+        else
+        {
+            Debug.LogError("Show Stats not implemented");
+            for (int i = 0; i < Characters.Count; i++)
+            {
+               // Debug.Log("char no. " + i + " score " + Score[Characters[i]]);
+            }
+            for (int i = 0; i < Characters.Count; i++)
+            {
+                Characters[i].OnGameEnded();
+            }
+        }
+
     }
     public void StartGame()
     {
@@ -84,7 +132,7 @@ public class GameplayManager : MonoBehaviour
 
         if (Input.GetButton("Submit"))
         {
-            GuiController.Instance.VictoryScreen();
+            //GuiController.Instance.VictoryScreen();
         }
     }
 

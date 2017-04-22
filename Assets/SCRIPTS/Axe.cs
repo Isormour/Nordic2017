@@ -17,6 +17,7 @@ public class Axe : MonoBehaviour
     Coroutine LifeTimeCorr;
     Transform Model;
     Transform owner;
+    PlayerCharacter Thrower;
     // Use this for initialization
     void Start()
     {
@@ -59,8 +60,15 @@ public class Axe : MonoBehaviour
             if (LifeTimeCorr != null) StopCoroutine(LifeTimeCorr);
         }
     }
-    public void Throw()
+
+    internal PlayerCharacter getThrower()
     {
+        return Thrower;
+    }
+
+    public void Throw(PlayerCharacter Thrower)
+    {
+        this.Thrower = Thrower;
         Collider.enabled = true;
         Throwed = true;
         owner = null;
