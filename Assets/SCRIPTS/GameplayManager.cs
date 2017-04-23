@@ -16,8 +16,12 @@ public class GameplayManager : MonoBehaviour
     PlayerCharacter Streaker;
     int killStreak = 0;
     public GameObject fireworksPrefab;
+    public GameObject Leaderboard;
 
-
+    public List<PlayerCharacter> GetCharacters()
+    {
+        return Characters;
+    }
     // Use this for initialization
     private void Awake()
     {
@@ -39,6 +43,11 @@ public class GameplayManager : MonoBehaviour
         for (int i = 0; i < SpawnPointsContainer.childCount; i++)
         {
             SpawnPoints.Add(SpawnPointsContainer.GetChild(i).position);
+        }
+        PlayerController[] Players =  GameManager.Singleton.GetPlayerControllers();
+        for (int i = 0; i < Players.Length; i++)
+        {
+            Players[i].InitializeChar();
         }
         StartCoroutine(StartCounting());
     }
@@ -75,27 +84,27 @@ public class GameplayManager : MonoBehaviour
         {
             killStreak = 1;
         }
+        if (killStreak > 1) {
+            if (killStreak < 3)
+            {
+                // double
+                AudioClip VoiceDoubleKill = SoundManager.Singleton.VoiceDoubleKill;
+                SoundManager.CreateSound(VoiceDoubleKill, 0.7f);
 
-        if (killStreak > 1)
-        {
-            // double
-            AudioClip VoiceDoubleKill = SoundManager.Singleton.VoiceDoubleKill;
-            SoundManager.CreateSound(VoiceDoubleKill, 0.7f);
-
+            }
+            else if (killStreak < 4)
+            {
+                AudioClip voiceTrippleKill = SoundManager.Singleton.voiceTrippleKill;
+                SoundManager.CreateSound(voiceTrippleKill, 0.7f);
+                // triple
+            }
+            else if (killStreak < 5)
+            {
+                AudioClip VoiceMultiKill = SoundManager.Singleton.VoiceMultiKill;
+                SoundManager.CreateSound(VoiceMultiKill, 0.7f);
+                // fukuple
+            }
         }
-        else if (killStreak > 2)
-        {
-            AudioClip voiceTrippleKill = SoundManager.Singleton.voiceTrippleKill;
-            SoundManager.CreateSound(voiceTrippleKill, 0.7f);
-            // triple
-        }
-        else if (killStreak > 3)
-        {
-            AudioClip VoiceMultiKill = SoundManager.Singleton.VoiceMultiKill;
-            SoundManager.CreateSound(VoiceMultiKill, 0.7f);
-            // fukuple
-        }
-
 
         if (Killer)
         {
@@ -151,6 +160,7 @@ public class GameplayManager : MonoBehaviour
         else
         {
             Debug.LogError("Show Stats not implemented");
+            Leaderboard.GetComponent<LeaderboardManager>().ShowLeaderBoards();
             for (int i = 0; i < Characters.Count; i++)
             {
                // Debug.Log("char no. " + i + " score " + Score[Characters[i]]);

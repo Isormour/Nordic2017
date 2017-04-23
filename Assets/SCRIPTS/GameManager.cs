@@ -30,7 +30,10 @@ public class GameManager : MonoBehaviour
         }
      
     }
-
+    public PlayerController[] GetPlayerControllers()
+    {
+        return PlayerControllers;
+    }
     public PlayerController GetFirstPlayer()
     {
         return PlayerControllers[0];

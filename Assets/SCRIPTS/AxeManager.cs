@@ -50,9 +50,11 @@ public class AxeManager : MonoBehaviour
         int random = Random.Range(0, Chests.Length);
         for (int i = 0; i < Chests.Length; i++)
         {
-            Chests[i].SetHaveAxe(false);
-            Chests[i].CloseChest();
-
+            if (Chests[i])
+            {
+                Chests[i].SetHaveAxe(false);
+                Chests[i].CloseChest();
+            }
         }
         Chests[random].SetHaveAxe(true);
 

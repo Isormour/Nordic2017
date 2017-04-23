@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -40,6 +41,10 @@ public class PlayerCharacter : MonoBehaviour
     ParticleSystem RunParticle;
     ParticleSystem DashParticle;
 
+    public Color GetPlayerColor()
+    {
+        return Player.GetColor();
+    }
     // Use this for initialization
     void Start()
     {
@@ -351,6 +356,7 @@ public class PlayerCharacter : MonoBehaviour
     private void EndGameButton(EButtonState buttonState)
     {
         Debug.LogError("Go To Menu");
+        SceneManager.LoadScene("MainMenu3d");
     }
     private void ButtonBDown(EButtonState buttonState)
     {

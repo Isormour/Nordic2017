@@ -97,7 +97,7 @@ public class Chest : MonoBehaviour
     public void CloseChest()
     {
         IsOpen = false;
-        Marker.gameObject.SetActive(false);
+        //Marker.gameObject.SetActive(false);
         Anim.SetInteger("AnimationState", 0);
     }
     public Axe PickupAxe(PlayerCharacter PlayerChar)

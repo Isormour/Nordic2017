@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public GamepadInput.GamePad.Index PlayerIndex;
     public GameObject CharPrefab;
     bool Initialized = false;
+    Color PlayerColor;
     // Use this for initialization
     void Start()
     {
@@ -29,10 +30,22 @@ public class PlayerController : MonoBehaviour
         Initialized = true;
     }
     // Update is called once per frame
+    public void InitializeChar()
+    {
+        GameObject GO = Instantiate(CharPrefab);
+        GO.transform.SetParent(this.transform);
+        GO.GetComponent<PlayerCharacter>().Initialize(this);
+    }
     void Update()
     {
         if (Initialized) Pad.CheckPadInput();
     }
+
+    public Color GetColor()
+    {
+        return PlayerColor;
+    }
+
     public void PushBehaviour(DSPad.DSPadBehaviour NewBehaviour)
     {
         Pad.SetBehaviour(NewBehaviour);
