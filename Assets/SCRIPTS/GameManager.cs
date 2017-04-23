@@ -26,9 +26,9 @@ public class GameManager : MonoBehaviour
         PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
         for (int i = 0; i < PlayerControllers.Length; i++)
         {
-            PlayerControllers[i].Initialize();
+           PlayerControllers[i].Initialize();
         }
-        Debug.Log("Game Manager");
+     
     }
 
     public PlayerController GetFirstPlayer()

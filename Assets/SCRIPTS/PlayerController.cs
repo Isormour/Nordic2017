@@ -19,13 +19,13 @@ public class PlayerController : MonoBehaviour
     public void Initialize()
     {
         Pad = new DSPad(PlayerIndex);
-        GameObject GO = Instantiate(CharPrefab);
-        GO.transform.SetParent(this.transform);
-        GO.GetComponent<PlayerCharacter>().Initialize(this);
-        if (PlayerIndex == GamepadInput.GamePad.Index.Any)
-        {
-            GO.GetComponent<PlayerCharacter>().debugSteer = true;
-        }
+        //GameObject GO = Instantiate(CharPrefab);
+       // GO.transform.SetParent(this.transform);
+       // GO.GetComponent<PlayerCharacter>().Initialize(this);
+        //if (PlayerIndex == GamepadInput.GamePad.Index.Any)
+       // {
+       //     GO.GetComponent<PlayerCharacter>().debugSteer = true;
+       // }
         Initialized = true;
     }
     // Update is called once per frame
