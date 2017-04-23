@@ -16,7 +16,6 @@ public class Menu3dController : MonoBehaviour
 
     public float input_delay = 0.5f;
 
-    public string start_input_label = "start";
     public string vertical_input_label = "Vertical";
     public string horizontal_input_label = "Horizontal";
     public string action_input_label = "Action";
@@ -101,18 +100,20 @@ public class Menu3dController : MonoBehaviour
 
     }
 
-    public void UpdateSelector(int player, int position)
-    {
-        Debug.Log("updating position: player:" + player + ", position:" + position);
-        //menu_selectors[player].transform.position = menu_positions[position].transform.position;
-        menu_positions[position].GetComponent<Renderer>().material.color = Color.red;
-    }
+    //public void UpdateSelector(int player, int position)
+    //{
+    //    Debug.Log("updating position: player:" + player + ", position:" + position);
+    //    //menu_selectors[player].transform.position = menu_positions[position].transform.position;
+    //    menu_positions[position].GetComponent<Renderer>().material.color = Color.red;
+    //}
 
     public void UpdateColor(int position, Color new_color)
     {
         Debug.Log("updating color: Color:" + new_color + ", position:" + position);
         //menu_selectors[player].transform.position = menu_positions[position].transform.position;
-        menu_positions[position].GetComponent<Renderer>().material.color = new_color;
+        //menu_positions[position].GetComponent<Renderer>().material.color = new_color;
+        menu_positions[position].GetComponentInChildren<Renderer>().material.color = new_color;
+        
     }
 
     public void ActivateSelection(int position)
