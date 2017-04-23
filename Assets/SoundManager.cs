@@ -5,7 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
 
-    public static void CreateSound(AudioClip Clip, float Volume, bool Loop=false)
+    public static void CreateSound(AudioClip Clip, float Volume, bool Loop = false, bool getTimeFromClip = false)
     {
         GameObject GO = new GameObject();
         AudioSource AS = GO.AddComponent<AudioSource>();
@@ -15,6 +15,10 @@ public class SoundManager : MonoBehaviour
         if (!Loop)
         {
             GO.AddComponent<TimedDestroyer>();
+        }
+        if (getTimeFromClip)
+        {
+            GO.GetComponent<TimedDestroyer>().SetTime(Clip.length);
         }
         AS.loop = Loop;
     }
@@ -41,6 +45,23 @@ public class SoundManager : MonoBehaviour
     public AudioClip DwarfCollision;
     public AudioClip DwarfStunned;
 
+    public AudioClip Music1Intro;
+    public AudioClip Music1Loop;
+    public AudioClip Music2Intro;
+    public AudioClip Music2Loop;
+    public AudioClip Music3Intro;
+    public AudioClip Music3Loop;
+
+    public static void PlayMusic(AudioClip intro, AudioClip loop)
+    {
+        Singleton.StartCoroutine(StartMusicLoop(intro.length,intro,loop));
+    }
+    public static IEnumerator StartMusicLoop(float Delay, AudioClip intro, AudioClip loop, bool getTimeFromClip = false)
+    {
+        CreateSound(intro, 0.5f,false,true);
+        yield return new WaitForSeconds(Delay);
+        CreateSound(loop, 0.5f,true);
+    }
 
     void Awake()
     {

@@ -15,6 +15,7 @@ public class Chest : MonoBehaviour
     public bool DebugMaterialChanger;
     bool IsOpen;
     Animator Anim;
+    ParticleSystem Particle;
     internal void Init()
     {
         PlayersInRange = new List<PlayerCharacter>();
@@ -29,6 +30,7 @@ public class Chest : MonoBehaviour
             Debug.LogError("Marker Should Exist");
         }
         Anim = GetComponentInChildren<Animator>();
+        Particle = GetComponentInChildren<ParticleSystem>();
     }
 
     Transform Marker;
@@ -82,8 +84,8 @@ public class Chest : MonoBehaviour
             Marker.GetComponent<MeshRenderer>().material.color = new Color(0.2f, 0.8f, 0.2f);
 
             GameObject AxeOB = Instantiate(AxePrefab) as GameObject;
-            AxeOB.transform.position = this.transform.position + (this.transform.forward*2);
-         
+            AxeOB.transform.position = this.transform.position + (this.transform.forward * 2);
+            Particle.Play();
         }
         else
         {

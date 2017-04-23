@@ -11,8 +11,9 @@ public class LavalevelButton : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        IsPressed = false;
         CharsOnTrap = new List<PlayerCharacter>();
-        StartVect = this.transform.position;
+        StartVect = Trap.transform.position;
     }
 
     // Update is called once per frame
@@ -20,11 +21,11 @@ public class LavalevelButton : MonoBehaviour
     {
         if (IsPressed)
         {
-            this.transform.position = Vector3.Lerp(this.transform.position, StartVect + new Vector3(0, 4, 0), 0.2f);
+            Trap.transform.position = Vector3.Lerp(Trap.transform.position, StartVect + new Vector3(0, -4, 0), 0.2f);
         }
         else
         {
-            this.transform.position = Vector3.Lerp(this.transform.position, StartVect, 0.2f);
+            Trap.transform.position = Vector3.Lerp(Trap.transform.position, StartVect, 0.2f);
         }
     }
     void OnTriggerEnter(Collider other)
