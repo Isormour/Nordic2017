@@ -62,16 +62,16 @@ public class Menus3DManager : MonoBehaviour
 
     void Start()
     {
-        //PlayerController first_player;
-        //first_player = GameManager.Singleton.GetFirstPlayer();
+        PlayerController first_player;
+        first_player = GameManager.Singleton.GetFirstPlayer();
 
-        //DSPad.DSPadBehaviour MenuBehaviour;
+        DSPad.DSPadBehaviour MenuBehaviour;
 
-        ////menu controls
-        //MenuBehaviour = new DSPad.DSPadBehaviour();
-        //MenuBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, MenuMove);
-        //MenuBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, MenuSelect);
-        //first_player.PushBehaviour(MenuBehaviour);
+        //menu controls
+        MenuBehaviour = new DSPad.DSPadBehaviour();
+        MenuBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, MenuMove);
+        MenuBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, MenuSelect);
+        first_player.PushBehaviour(MenuBehaviour);
 
         //initialize main menu data
         MainMenu();
@@ -126,6 +126,22 @@ public class Menus3DManager : MonoBehaviour
 
     }
 
+    void MenuMoveDown()
+    {
+        UpdateColor(menu_selection_id, Color.white);
+        menu_selection_id = Mathf.Max(0, menu_selection_id - 1);
+
+        players[i].last_input_time = Time.timeSinceLevelLoad;
+        UpdateColor(menu_selection_id, Color.red);
+    }
+    void MenuMoveUp()
+    {
+        UpdateColor(menu_selection_id, Color.white);
+        menu_selection_id = Mathf.Min(options_count - 1, menu_selection_id + 1);
+
+        players[i].last_input_time = Time.timeSinceLevelLoad;
+        UpdateColor(menu_selection_id, Color.red);
+    }
     //public void UpdateSelector(int player, int position)
     //{
     //    Debug.Log("updating position: player:" + player + ", position:" + position);
@@ -153,21 +169,20 @@ public class Menus3DManager : MonoBehaviour
     {
         if (AxisVect.magnitude > 0)
         {
-            Debug.Log(AxisVect);
-
-            Vector3 SpeedVect = new Vector3(AxisVect.x, 0, AxisVect.y);
-            Vector3 lookPosition = this.transform.position + SpeedVect;
-            this.transform.LookAt(lookPosition);
+            if (AxisVect.y < 0)
+            {
+                MenuMoveDown();
+            }
+            else if (AxisVect.y > 0)
+            {
+                MenuMoveUp();
+            }
         }
     }
 
     void MenuSelect(EButtonState buttonState)
     {
-        Debug.Log("Dash!");
-        if (this.gameObject.active)
-        {
-            //StartCoroutine(Dash());
-        }
+        ActivateSelection(menu_selection_id);
     }
 
 

@@ -62,6 +62,7 @@ public class PlayerCharacter : MonoBehaviour
         StunIndicator.SetActive(false);
         CollisionParticle = transform.FindChild("iskra_particle").GetComponent<ParticleSystem>();
         DashParticle = transform.FindChild("dash_particle").GetComponent<ParticleSystem>();
+
     }
 
     // Update is called once per frame
