@@ -85,7 +85,7 @@ public class Chest : MonoBehaviour
 
             GameObject AxeOB = Instantiate(AxePrefab) as GameObject;
             AxeOB.transform.position = this.transform.position + (this.transform.forward * 2);
-            Particle.Play();
+           if(Particle) Particle.Play();
         }
         else
         {

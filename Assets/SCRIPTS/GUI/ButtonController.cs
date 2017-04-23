@@ -8,6 +8,8 @@ public class ButtonController : MonoBehaviour
     
     public void Action()
     {
+        Debug.Log("ButtonController Action: " + button_type);
+
         if (button_type == "map")
             Menus3DManager.Instance.MapSelection();
         if (button_type == "credits")
@@ -16,8 +18,23 @@ public class ButtonController : MonoBehaviour
             Menus3DManager.Instance.QuitGame();
         if (button_type == "main")
             Menus3DManager.Instance.MainMenu();
-        if (button_type == "skin")
+
+        if (button_type == "skin1")
+        {
+            Menus3DManager.Instance.map_id = 1;
             Menus3DManager.Instance.SkinSelection();
+        }
+        if (button_type == "skin2")
+        {
+            Menus3DManager.Instance.map_id = 2;
+            Menus3DManager.Instance.SkinSelection();
+        }
+        if (button_type == "skin3")
+        {
+            Menus3DManager.Instance.map_id = 3;
+            Menus3DManager.Instance.SkinSelection();
+        }
+
         if (button_type == "start")
             Menus3DManager.Instance.StartGame();
     }

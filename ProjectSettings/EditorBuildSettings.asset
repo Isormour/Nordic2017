@@ -6,19 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StartGame.unity
+    path: Assets/SCENES/StartGame.unity
     guid: 0f230316776efd447a0cba320fdbe507
   - enabled: 1
-    path: Assets/Scenes/MainMenu3d.unity
+    path: Assets/SCENES/MainMenu3d.unity
     guid: 03764d122b0e56e45af4c49c0fe62d28
   - enabled: 0
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/SCENES/MainMenu.unity
     guid: 968a37ba199f58f4e90fb5262c473f50
   - enabled: 0
-    path: Assets/Scenes/PlayerSelection.unity
+    path: Assets/SCENES/PlayerSelection.unity
     guid: 4860ba2e923915e43b2fb17903183534
   - enabled: 1
-    path: Assets/Scenes/GameplayMain.unity
+    path: Assets/SCENES/GameplayMain.unity
     guid: c9012126f14602f44b3a27f4666bedc1
   - enabled: 0
     path: 
@@ -30,5 +30,5 @@ EditorBuildSettings:
     path: Assets/scena_3level.unity
     guid: a9c1cefd17f874c4286ff563d6e8c557
   - enabled: 1
-    path: Assets/Scenes/Scena_platforma.unity
+    path: Assets/SCENES/Scena_platforma.unity
     guid: a921a4a4d6201304593d97655822aaf7
