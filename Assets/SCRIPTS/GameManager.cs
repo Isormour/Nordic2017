@@ -18,17 +18,18 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
+        for (int i = 0; i < PlayerControllers.Length; i++)
+        {
+            PlayerControllers[i].Initialize();
+        }
+
     }
 
     PlayerController[] PlayerControllers;
     void Start()
     {
-        PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
-        for (int i = 0; i < PlayerControllers.Length; i++)
-        {
-           PlayerControllers[i].Initialize();
-        }
-     
     }
 
     public PlayerController GetFirstPlayer()

@@ -12,6 +12,20 @@ public class Menus3DManager : MonoBehaviour
      MenuCameraController / CameraRig
      */
 
+    //public struct GameData
+    //{
+    //    public int map_id;
+    //    public int player_1_color;
+    //    public int player_2_color;
+    //    public int player_3_color;
+    //    public int player_4_color;
+    //}
+    public int map_id;
+    public int player_1_color;
+    public int player_2_color;
+    public int player_3_color;
+    public int player_4_color;
+
     public Menu3dController main_menu;
     public Menu3dController credits_menu;
     public Menu3dController map_select_menu;
@@ -59,6 +73,7 @@ public class Menus3DManager : MonoBehaviour
         if (ColorUtility.TryParseHtmlString(hex_value, out base_color))
             Debug.Log("Color converted.");
 
+        map_id = 1;
     }
 
     void Start()
@@ -132,22 +147,7 @@ public class Menus3DManager : MonoBehaviour
 
     }
 
-    void MenuMoveDown()
-    {
-        UpdateColor(menu_selection_id, Color.white);
-        menu_selection_id = Mathf.Max(0, menu_selection_id - 1);
 
-        players[i].last_input_time = Time.timeSinceLevelLoad;
-        UpdateColor(menu_selection_id, Color.red);
-    }
-    void MenuMoveUp()
-    {
-        UpdateColor(menu_selection_id, Color.white);
-        menu_selection_id = Mathf.Min(options_count - 1, menu_selection_id + 1);
-
-        players[i].last_input_time = Time.timeSinceLevelLoad;
-        UpdateColor(menu_selection_id, Color.red);
-    }
     //public void UpdateSelector(int player, int position)
     //{
     //    Debug.Log("updating position: player:" + player + ", position:" + position);
@@ -171,6 +171,10 @@ public class Menus3DManager : MonoBehaviour
         UpdateColor(menu_selection_id, Color.red);
     }
 
+
+    // >>>>>>>>>>>>>>>>>>>>
+    //  GAMEPAD INPUT
+
     void MenuMove(Vector2 AxisVect)
     {
         if (AxisVect.magnitude > 0)
@@ -191,7 +195,27 @@ public class Menus3DManager : MonoBehaviour
         ActivateSelection(menu_selection_id);
     }
 
+    void MenuMoveDown()
+    {
+        UpdateColor(menu_selection_id, Color.white);
+        menu_selection_id = Mathf.Max(0, menu_selection_id - 1);
 
+        players[i].last_input_time = Time.timeSinceLevelLoad;
+        UpdateColor(menu_selection_id, Color.red);
+    }
+    void MenuMoveUp()
+    {
+        UpdateColor(menu_selection_id, Color.white);
+        menu_selection_id = Mathf.Min(options_count - 1, menu_selection_id + 1);
+
+        players[i].last_input_time = Time.timeSinceLevelLoad;
+        UpdateColor(menu_selection_id, Color.red);
+    }
+
+    // <<<<<<<<<<<<<<<<<<<<
+
+
+    // >>>>>>>>>>>>>>>>>>>>
     // BUTTONS ACTIONS
 
     //public void SwitchMenu(string menu_name)
@@ -204,6 +228,7 @@ public class Menus3DManager : MonoBehaviour
 
     public void MainMenu()
     {
+        Debug.Log("MainMenu.");
         //Debug.Log("Not implemented.");
         //GuiController.Instance.QuitGame();
         menu_camera.set_mount(main_menu.camera_mount);
@@ -213,6 +238,7 @@ public class Menus3DManager : MonoBehaviour
     }
     public void MapSelection()
     {
+        Debug.Log("MapSelection.");
         //GuiController.Instance.StartGame();
         //Transform target = Menu3dController.Instance.menu_camera.
         //Menu3dController.Instance.menu_camera.set_mount();
@@ -225,6 +251,7 @@ public class Menus3DManager : MonoBehaviour
     }
     public void Credits()
     {
+        Debug.Log("Credits.");
         //Debug.Log("Not implemented.");
         //GuiController.Instance.QuitGame();
         menu_camera.set_mount(credits_menu.camera_mount);
@@ -234,6 +261,7 @@ public class Menus3DManager : MonoBehaviour
     }
     public void SkinSelection()
     {
+        Debug.Log("SkinSelection.");
         //GuiController.Instance.StartGame();
         //Transform target = Menu3dController.Instance.menu_camera.
         //Menu3dController.Instance.menu_camera.set_mount();
@@ -252,7 +280,10 @@ public class Menus3DManager : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("StartGame.");
+        GuiController.Instance.starting_map = map_id;
         GuiController.Instance.StartGame();
     }
+
+    // <<<<<<<<<<<<<<<<<<<<
 
 }

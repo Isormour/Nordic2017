@@ -7,12 +7,16 @@ public class GuiController : MonoBehaviour
         
     public static GuiController Instance = null;
 
+    public int starting_map;
+
     void Awake()
     {
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
+
+        starting_map = 1;
     }
 
     public void MainMenu()
@@ -45,7 +49,14 @@ public class GuiController : MonoBehaviour
     {
         GuiAudioController.Instance.game_starting();
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("GameplayMain");
+        
+        if (starting_map == 1)
+            SceneManager.LoadScene("GameplayMain");
+        if (starting_map == 2)
+            SceneManager.LoadScene("Scena_platforma");
+        if (starting_map == 3)
+            SceneManager.LoadScene("scena_3level");
+
     }
 
     public void QuitGame()
