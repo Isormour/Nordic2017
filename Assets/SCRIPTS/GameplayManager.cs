@@ -60,8 +60,12 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            Score[DeadPlayer] -= 1;
+            if (DeadPlayer.transform.position.y < -3.0f)
+            {
+                Score[DeadPlayer] -= 1;
+            }
         }
+
         AlivePlayers.Remove(DeadPlayer);
         if (AlivePlayers.Count < 2)
         {

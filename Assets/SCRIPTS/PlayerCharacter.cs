@@ -24,6 +24,7 @@ public class PlayerCharacter : MonoBehaviour
     bool IsDashLocked;
     bool IsDashing;
     bool IsPushed;
+    bool FinalGameEnd;
     Chest CurrentChest;
 
     MeshRenderer MeshColor;
@@ -44,6 +45,8 @@ public class PlayerCharacter : MonoBehaviour
         IsDashLocked = false;
         IsDashing = false;
         IsPushed = false;
+        FinalGameEnd = false;
+
         GameplayManager.Sceneton.AddCharacter(this);
         transform.gameObject.SetActive(false);
         Anim = GetComponentInChildren<Animator>();
@@ -90,27 +93,30 @@ public class PlayerCharacter : MonoBehaviour
     }
     void chceckY()
     {
-        if (InitialY < 9) {
-            if (InitialY - this.transform.position.y > 0.3f)
+        if (!FinalGameEnd)
+        {
+            if (InitialY < 9)
             {
-                Player.PushBehaviour(LockedBehaviour);
-                GetComponent<Rigidbody>().drag = 1;
-                this.transform.position += new Vector3(0, -0.1f, 0.0f);
-                if (this.transform.position.y < -3)
+                if (InitialY - this.transform.position.y > 0.5f && this.transform.position.y < 0)
                 {
-                    transform.GetComponent<BoxCollider>().enabled = false;
-                    //StartCoroutine(RespCorr());
-                    if (OnPlayerDeath != null)
+                    Player.PushBehaviour(LockedBehaviour);
+                    GetComponent<Rigidbody>().drag = 1;
+                    this.transform.position += new Vector3(0, -0.1f, 0.0f);
+                    if (this.transform.position.y < -3)
                     {
-                        OnPlayerDeath(this, null);
+                        transform.GetComponent<BoxCollider>().enabled = false;
+                        //StartCoroutine(RespCorr());
+                        if (OnPlayerDeath != null)
+                        {
+                            OnPlayerDeath(this, null);
+                        }
+                        AudioClip Die = SoundManager.Singleton.Die;
+                        SoundManager.CreateSound(Die, 0.7f);
+                        this.gameObject.SetActive(false);
                     }
-                    AudioClip Die = SoundManager.Singleton.Die;
-                    SoundManager.CreateSound(Die, 0.7f);
-                    this.gameObject.SetActive(false);
                 }
             }
         }
-
     }
     public void Initialize(PlayerController playerController)
     {
@@ -245,6 +251,7 @@ public class PlayerCharacter : MonoBehaviour
         transform.gameObject.SetActive(true);
         transform.position = new Vector3(UnityEngine.Random.Range(-10, 10), -100, 0);
         StartCoroutine(WaitforScores());
+        FinalGameEnd = true;
     }
     IEnumerator WaitforScores()
     {
@@ -267,6 +274,10 @@ public class PlayerCharacter : MonoBehaviour
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         Respawn();
         Player.PushBehaviour(LockedBehaviour);
+        IsDashLocked = false;
+        IsDashing = false;
+        IsPushed = false;
+        CurrentAxe = null;
         GetComponent<Rigidbody>().drag = 10.39f;
     }
 
@@ -349,7 +360,6 @@ public class PlayerCharacter : MonoBehaviour
         SoundManager.CreateSound(DashClip, 0.5f);
 
         yield return new WaitForSeconds(0.3f);
-
         MeshColor.material.color = new Color(0.2f, 0.2f, 0.8f);
         IsDashing = false;
 
