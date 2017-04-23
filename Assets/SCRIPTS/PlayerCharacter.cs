@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public delegate void PlayerDeath(PlayerCharacter DeadPlayer,Axe KillerAxe);
+    public delegate void PlayerDeath(PlayerCharacter DeadPlayer, Axe KillerAxe);
     public event PlayerDeath OnPlayerDeath;
+
+    List<Obstacle> Obstacles;
 
     PlayerController Player;
     DSPad.DSPadBehaviour InGameBehaviour;
     DSPad.DSPadBehaviour LockedBehaviour;
     DSPad.DSPadBehaviour TotalLock;
+    DSPad.DSPadBehaviour EndGameBehaviour;
+
     float Speed = 130.1f;
     float DashForce = 40.0f;
     Rigidbody CharacterRigid;
@@ -23,13 +27,18 @@ public class PlayerCharacter : MonoBehaviour
     Chest CurrentChest;
 
     MeshRenderer MeshColor;
-
+    ParticleSystem CollisionParticle;
+    GameObject StunIndicator;
     Animator Anim;
+
+    Coroutine StunCorr;
+    float InitialY = 10;
 
     public bool debugSteer = false;
     // Use this for initialization
     void Start()
     {
+        Obstacles = new List<Obstacle>();
         CurrentAxe = null;
         CharacterRigid = GetComponent<Rigidbody>();
         IsDashLocked = false;
@@ -39,7 +48,10 @@ public class PlayerCharacter : MonoBehaviour
         transform.gameObject.SetActive(false);
         Anim = GetComponentInChildren<Animator>();
         MeshColor = GetComponent<MeshRenderer>();
-       
+
+        StunIndicator = transform.FindChild("StunIndicator").gameObject;
+        StunIndicator.SetActive(false);
+        CollisionParticle = transform.FindChild("iskra_particle").GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -74,8 +86,32 @@ public class PlayerCharacter : MonoBehaviour
             }
             MoveByStick(MovementVector);
         }
+        chceckY();
     }
+    void chceckY()
+    {
+        if (InitialY < 9) {
+            if (InitialY - this.transform.position.y > 0.3f)
+            {
+                Player.PushBehaviour(LockedBehaviour);
+                GetComponent<Rigidbody>().drag = 1;
+                this.transform.position += new Vector3(0, -0.1f, 0.0f);
+                if (this.transform.position.y < -3)
+                {
+                    transform.GetComponent<BoxCollider>().enabled = false;
+                    //StartCoroutine(RespCorr());
+                    if (OnPlayerDeath != null)
+                    {
+                        OnPlayerDeath(this, null);
+                    }
+                    AudioClip Die = SoundManager.Singleton.Die;
+                    SoundManager.CreateSound(Die, 0.7f);
+                    this.gameObject.SetActive(false);
+                }
+            }
+        }
 
+    }
     public void Initialize(PlayerController playerController)
     {
         Player = playerController;
@@ -90,9 +126,14 @@ public class PlayerCharacter : MonoBehaviour
         LockedBehaviour.AddStickBehaviour(GamepadInput.GamePad.Axis.LeftStick, LookByStick);
         Player.PushBehaviour(LockedBehaviour);
 
+        EndGameBehaviour = new DSPad.DSPadBehaviour();
+        EndGameBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.A, EButtonState.down, EndGameButton);
+        EndGameBehaviour.AddButtonBehaviour(GamepadInput.GamePad.Button.B, EButtonState.down, EndGameButton);
+
         TotalLock = new DSPad.DSPadBehaviour();
 
         Debug.Log("Initialized");
+
 
 
     }
@@ -105,6 +146,7 @@ public class PlayerCharacter : MonoBehaviour
     internal void OnGameStarted()
     {
         Player.PushBehaviour(InGameBehaviour);
+        InitialY = this.transform.position.y;
     }
 
     internal void OnExitChestRange(Chest chest)
@@ -113,6 +155,7 @@ public class PlayerCharacter : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+
         Axe axe = collision.gameObject.GetComponent<Axe>();
         if (axe)
         {
@@ -133,23 +176,48 @@ public class PlayerCharacter : MonoBehaviour
             if (IsDashing)
             {
                 IsDashing = false;
-                OtherPlayer.Push(this.transform.forward * DashForce * 10.0f);
+                OtherPlayer.Push(this.transform.forward * DashForce * 20.0f);
 
                 AudioClip DwarfCollision = SoundManager.Singleton.DwarfCollision;
                 SoundManager.CreateSound(DwarfCollision, 0.7f);
+                CollisionParticle.Play();
+                if (Obstacles.Count > 0)
+                {
+                    TryStun();
+                }
             }
         }
         Obstacle OBS = collision.gameObject.GetComponent<Obstacle>();
         if (OBS)
         {
+            Obstacles.Add(OBS);
             if (IsPushed)
             {
-                StartCoroutine(Stun());
+                TryStun();
             }
             if (IsDashing)
             {
-                StartCoroutine(Stun());
+                //StartCoroutine(Stun());
             }
+        }
+    }
+    void TryStun()
+    {
+        if (StunCorr != null)
+        {
+
+        }
+        else
+        {
+            StunCorr = StartCoroutine(Stun());
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        Obstacle OBS = collision.gameObject.GetComponent<Obstacle>();
+        if (OBS)
+        {
+            Obstacles.Remove(OBS);
         }
     }
     IEnumerator Stun()
@@ -160,13 +228,29 @@ public class PlayerCharacter : MonoBehaviour
         Anim.SetInteger("AnimationState", 0);
         Player.PushBehaviour(TotalLock);
         MeshColor.material.color = new Color(1.0f, 1.0f, 0.2f);
+        StunIndicator.SetActive(true);
+
         yield return new WaitForSeconds(2.0f);
         MeshColor.material.color = new Color(1.0f, 1.0f, 1.0f);
         Player.PushBehaviour(InGameBehaviour);
+        StunIndicator.SetActive(false);
         IsPushed = false;
         IsDashing = false;
+        StunCorr = null;
 
+    }
+    public void OnGameEnded()
+    {
+        Player.PushBehaviour(TotalLock);
+        transform.gameObject.SetActive(true);
+        transform.position = new Vector3(UnityEngine.Random.Range(-10, 10), -100, 0);
+        StartCoroutine(WaitforScores());
+    }
+    IEnumerator WaitforScores()
+    {
+        yield return new WaitForSeconds(3);
 
+        Player.PushBehaviour(EndGameBehaviour);
     }
     void Push(Vector3 PushForce)
     {
@@ -175,7 +259,7 @@ public class PlayerCharacter : MonoBehaviour
     }
     IEnumerator PushCD()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         IsPushed = false;
     }
     internal void ResetChar()
@@ -183,6 +267,7 @@ public class PlayerCharacter : MonoBehaviour
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         Respawn();
         Player.PushBehaviour(LockedBehaviour);
+        GetComponent<Rigidbody>().drag = 10.39f;
     }
 
 
@@ -237,13 +322,20 @@ public class PlayerCharacter : MonoBehaviour
         transform.GetComponent<BoxCollider>().enabled = true;
 
     }
+    private void EndGameButton(EButtonState buttonState)
+    {
+        Debug.LogError("Go To Menu");
+    }
     private void ButtonBDown(EButtonState buttonState)
     {
         //Dash
         if (!IsDashLocked)
         {
             Debug.Log("Dash!");
-           if(this.gameObject.active) StartCoroutine(Dash());
+            // if (this.gameObject.active)
+            {
+                StartCoroutine(Dash());
+            }
         }
     }
     IEnumerator Dash()
@@ -281,7 +373,7 @@ public class PlayerCharacter : MonoBehaviour
                 {
                     if (CurrentChest.GetHaveAxe())
                     {
-                      //CurrentAxe = CurrentChest.PickupAxe(this);
+                        //CurrentAxe = CurrentChest.PickupAxe(this);
                     }
                 }
             }
@@ -290,7 +382,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (CurrentAxe.transform.parent == this.transform)
             {
-                CurrentAxe.Throw();
+                CurrentAxe.Throw(this);
 
                 AudioClip AxeThrow = SoundManager.Singleton.AxeThrow;
                 SoundManager.CreateSound(AxeThrow, 0.7f);
