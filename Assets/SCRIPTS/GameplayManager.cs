@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
+    public Screenshake Shaker;
     List<PlayerCharacter> Characters;
     List<GameObject> Dummies;
     List<PlayerCharacter> AlivePlayers;
@@ -12,6 +13,11 @@ public class GameplayManager : MonoBehaviour
     List<Vector3> SpawnPoints;
     public GameObject DummyPrefab;
     Dictionary<PlayerCharacter, int> Score;
+    PlayerCharacter Streaker;
+    int killStreak = 0;
+    public GameObject fireworksPrefab;
+
+
     // Use this for initialization
     private void Awake()
     {
@@ -54,6 +60,43 @@ public class GameplayManager : MonoBehaviour
 
     private void Character_OnPlayerDeath(PlayerCharacter DeadPlayer, Axe Killer)
     {
+        Shaker.Shake(3.0f);
+
+        if (Streaker == null)
+        {
+            Streaker = Killer.getThrower();
+            killStreak++;
+        }
+        else if (Streaker == Killer.getThrower())
+        {
+            killStreak++;
+        }
+        else if (Streaker != Killer.getThrower())
+        {
+            killStreak = 1;
+        }
+
+        if (killStreak > 1)
+        {
+            // double
+            AudioClip VoiceDoubleKill = SoundManager.Singleton.VoiceDoubleKill;
+            SoundManager.CreateSound(VoiceDoubleKill, 0.7f);
+
+        }
+        else if (killStreak > 2)
+        {
+            AudioClip voiceTrippleKill = SoundManager.Singleton.voiceTrippleKill;
+            SoundManager.CreateSound(voiceTrippleKill, 0.7f);
+            // triple
+        }
+        else if (killStreak > 3)
+        {
+            AudioClip VoiceMultiKill = SoundManager.Singleton.VoiceMultiKill;
+            SoundManager.CreateSound(VoiceMultiKill, 0.7f);
+            // fukuple
+        }
+
+
         if (Killer)
         {
             Score[Killer.getThrower()] += 1;
