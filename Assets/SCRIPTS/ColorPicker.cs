@@ -10,7 +10,7 @@ public class ColorPicker : MonoBehaviour {
         for (int i = 0; i < Players.Length; i++)
         {
             DSPad.DSPadBehaviour ColorBehav = new DSPad.DSPadBehaviour();
-            ColorBehav.
+            
             Players[i].PushBehaviour(ColorBehav);
         }
 	}

@@ -30,7 +30,9 @@ public class LeaderboardManager : MonoBehaviour {
 
         for (int i = 0; i < Chars.Count; i++)
         {
-            Texts[i].text = Score[Chars[i]].ToString();
+            Texts[i+1].text = Score[Chars[i]].ToString();
+            transform.GetChild(i+1).GetComponent<MeshRenderer>().material.color = Chars[i].BodyColor.material.color;
         }
+        Texts[0].text = "Points";
     }
 }

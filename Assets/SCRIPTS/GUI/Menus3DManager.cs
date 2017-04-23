@@ -37,6 +37,8 @@ public class Menus3DManager : MonoBehaviour
 
     public static Menus3DManager Instance = null;
 
+    public Color base_color;
+
     private void Awake()
     {
         // only first player controls menu
@@ -48,6 +50,14 @@ public class Menus3DManager : MonoBehaviour
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
+
+        // set default color
+        base_color = Color.white;
+        string hex_value;
+        //hex_value = "#52463EFF";
+        hex_value = "#806850FF";
+        if (ColorUtility.TryParseHtmlString(hex_value, out base_color))
+            Debug.Log("Color converted.");
 
     }
 
@@ -89,7 +99,7 @@ public class Menus3DManager : MonoBehaviour
             {
                 Debug.Log(vertical_input_label + players[i].player_id + ", positive");
 
-                UpdateColor(menu_selection_id, Color.white);
+                UpdateColor(menu_selection_id, base_color);
                 menu_selection_id = Mathf.Max(0, menu_selection_id - 1);
 
                 players[i].last_input_time = Time.timeSinceLevelLoad;
@@ -99,7 +109,7 @@ public class Menus3DManager : MonoBehaviour
             {
                 Debug.Log(vertical_input_label + players[i].player_id + ", negative");
 
-                UpdateColor(menu_selection_id, Color.white);
+                UpdateColor(menu_selection_id, base_color);
                 menu_selection_id = Mathf.Min(options_count - 1, menu_selection_id + 1);
 
                 players[i].last_input_time = Time.timeSinceLevelLoad;
@@ -110,6 +120,11 @@ public class Menus3DManager : MonoBehaviour
             if (Input.GetButtonDown(action_input_label + players[i].player_id))
             {
                 Debug.Log(action_input_label + players[i].player_id);
+
+                //restore default color
+                UpdateColor(menu_selection_id, base_color);
+
+                //move to new scene
                 ActivateSelection(menu_selection_id);
             }
 
@@ -152,6 +167,8 @@ public class Menus3DManager : MonoBehaviour
     {
         Debug.Log("ActivateSelection:" + position);
         current_menu_positions[position].GetComponent<ButtonController>().Action();
+        // Action updates current_menu_positions and menu_selection_id
+        UpdateColor(menu_selection_id, Color.red);
     }
 
     void MenuMove(Vector2 AxisVect)

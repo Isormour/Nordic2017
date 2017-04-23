@@ -14,7 +14,8 @@ public class GameStart : MonoBehaviour {
     {
         GuiAudioController.Instance.game_starting();
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu3d");
     }
     
 }

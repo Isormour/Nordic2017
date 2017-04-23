@@ -144,7 +144,7 @@ public class GameplayManager : MonoBehaviour
 
     void Endgame()
     {
-        int PointsToEndGame = 5;
+        int PointsToEndGame =1;
         bool HaveSomeonePassed5Points = false;
         for (int i = 0; i < Characters.Count; i++)
         {
@@ -159,7 +159,7 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Show Stats not implemented");
+       
             Leaderboard.GetComponent<LeaderboardManager>().ShowLeaderBoards();
             for (int i = 0; i < Characters.Count; i++)
             {

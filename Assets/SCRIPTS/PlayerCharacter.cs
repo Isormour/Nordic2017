@@ -41,6 +41,8 @@ public class PlayerCharacter : MonoBehaviour
     ParticleSystem RunParticle;
     ParticleSystem DashParticle;
 
+    public SkinnedMeshRenderer BodyColor;
+
     public Color GetPlayerColor()
     {
         return Player.GetColor();
@@ -110,14 +112,14 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (InitialY < 9)
             {
-                if (InitialY - this.transform.position.y > 0.1f && this.transform.position.y < 0)
+                if (InitialY - this.transform.position.y > 0.3f && this.transform.position.y < 0)
                 {
                     Player.PushBehaviour(LockedBehaviour);
                     GetComponent<Rigidbody>().drag = 1;
                     this.transform.position += new Vector3(0, -0.2f, 0.0f);
                     if (this.transform.position.y < -4.0)
                     {
-                        transform.GetComponent<SphereCollider>().enabled = false;
+                        transform.GetComponent<CapsuleCollider>().enabled = false;
                         //StartCoroutine(RespCorr());
                         if (OnPlayerDeath != null)
                         {
@@ -179,7 +181,7 @@ public class PlayerCharacter : MonoBehaviour
         if (axe)
         {
             //MeshColor.enabled = false;
-            transform.GetComponent<SphereCollider>().enabled = false;
+            transform.GetComponent<CapsuleCollider>().enabled = false;
             //StartCoroutine(RespCorr());
             if (OnPlayerDeath != null)
             {
@@ -350,7 +352,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         transform.gameObject.SetActive(true);
         //transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        transform.GetComponent<SphereCollider>().enabled = true;
+        transform.GetComponent<CapsuleCollider>().enabled = true;
 
     }
     private void EndGameButton(EButtonState buttonState)

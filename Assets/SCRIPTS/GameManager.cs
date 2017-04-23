@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
         {
             Singleton = this;
             DontDestroyOnLoad(this.gameObject);
+            PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
+            for (int i = 0; i < PlayerControllers.Length; i++)
+            {
+                PlayerControllers[i].Initialize();
+            }
         }
         else
         {
@@ -23,11 +28,7 @@ public class GameManager : MonoBehaviour
     PlayerController[] PlayerControllers;
     void Start()
     {
-        PlayerControllers = transform.FindChild("PlayerControllers").GetComponentsInChildren<PlayerController>();
-        for (int i = 0; i < PlayerControllers.Length; i++)
-        {
-           PlayerControllers[i].Initialize();
-        }
+
      
     }
     public PlayerController[] GetPlayerControllers()

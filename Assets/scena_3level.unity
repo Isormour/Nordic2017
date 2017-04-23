@@ -4443,6 +4443,110 @@ MeshCollider:
   m_InflateMesh: 1
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300012, guid: ea07073030f7449448dee7dcb0367312, type: 3}
+--- !u!1001 &475433487
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 21.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 10.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0.15876126
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.987317
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4484999712798832, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 23310180680690836, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c892c91d6e9c4e64b9437b62b6654014, type: 2}
+    - target: {fileID: 23736726292750548, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c892c91d6e9c4e64b9437b62b6654014, type: 2}
+    - target: {fileID: 23939235618079008, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c892c91d6e9c4e64b9437b62b6654014, type: 2}
+    - target: {fileID: 23283316908264820, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c892c91d6e9c4e64b9437b62b6654014, type: 2}
+    - target: {fileID: 23698574017687252, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c892c91d6e9c4e64b9437b62b6654014, type: 2}
+    - target: {fileID: 114631300942330754, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: InitialPosition.z
+      value: 86.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114631300942330754, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: InitialPosition.y
+      value: 23.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114631300942330754, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: TargetPosition.y
+      value: 21.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114631300942330754, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+        type: 2}
+      propertyPath: TargetPosition.z
+      value: 10.78
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &475433488 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1358524318560876, guid: efefcc91d4b3c6642b9b6ce2d15c9d2c,
+    type: 2}
+  m_PrefabInternal: {fileID: 475433487}
 --- !u!1 &501821162
 GameObject:
   m_ObjectHideFlags: 0
@@ -5825,6 +5929,8 @@ MonoBehaviour:
   Shaker: {fileID: 1324276829}
   DummyPrefab: {fileID: 1855755252276166, guid: a12bef424de395948be56fab53f787c9,
     type: 2}
+  fireworksPrefab: {fileID: 0}
+  Leaderboard: {fileID: 475433488}
 --- !u!4 &1074284696
 Transform:
   m_ObjectHideFlags: 0
@@ -6341,6 +6447,7 @@ GameObject:
   - component: {fileID: 1324276823}
   - component: {fileID: 1324276828}
   - component: {fileID: 1324276829}
+  - component: {fileID: 1324276830}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -6459,6 +6566,40 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  relativeToCam: 0
+  strength: {x: 1, y: 1, z: 0}
+  multiplier: 1
+  time: 0.2
+  roundDecimals: 7
+--- !u!114 &1324276830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1324276822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3fa39210a224e4bb8a677e036668a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   relativeToCam: 0
   strength: {x: 1, y: 1, z: 0}
   multiplier: 1
