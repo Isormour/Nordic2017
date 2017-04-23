@@ -68,3 +68,9 @@ MonoBehaviour:
   VoiceMassacre: {fileID: 8300000, guid: 0e40905ce895cb8418a65ab322bd369e, type: 3}
   DwarfCollision: {fileID: 8300000, guid: 2377858ffc4d76548bb40e179d896891, type: 3}
   DwarfStunned: {fileID: 8300000, guid: 36647434a04abfd4db6274e70616af0c, type: 3}
+  Music1Intro: {fileID: 8300000, guid: 5261318f9cbbd6f45a965a07b6edc6b3, type: 3}
+  Music1Loop: {fileID: 8300000, guid: 465b81946c165af4eac1324ef664c1e4, type: 3}
+  Music2Intro: {fileID: 8300000, guid: 38d8609d33c508a4cb17a34c131bc3cd, type: 3}
+  Music2Loop: {fileID: 8300000, guid: 8c2979dbfa8ac994a9ff1cbedf1bf85c, type: 3}
+  Music3Intro: {fileID: 8300000, guid: 14774112d2740754fb4d4958b1a676b9, type: 3}
+  Music3Loop: {fileID: 8300000, guid: ddb30598c8a40564f9abaa596eb00b3c, type: 3}

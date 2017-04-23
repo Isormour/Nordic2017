@@ -36,16 +36,22 @@ public class PlayerCharacter : MonoBehaviour
     float InitialY = 10;
 
     public bool debugSteer = false;
+
+    ParticleSystem RunParticle;
+    ParticleSystem DashParticle;
+
     // Use this for initialization
     void Start()
     {
-        Obstacles = new List<Obstacle>();
+       if(Obstacles==null) Obstacles = new List<Obstacle>();
         CurrentAxe = null;
         CharacterRigid = GetComponent<Rigidbody>();
         IsDashLocked = false;
         IsDashing = false;
         IsPushed = false;
         FinalGameEnd = false;
+
+        RunParticle = transform.FindChild("run_particle").GetComponent<ParticleSystem>();
 
         GameplayManager.Sceneton.AddCharacter(this);
         transform.gameObject.SetActive(false);
@@ -55,6 +61,7 @@ public class PlayerCharacter : MonoBehaviour
         StunIndicator = transform.FindChild("StunIndicator").gameObject;
         StunIndicator.SetActive(false);
         CollisionParticle = transform.FindChild("iskra_particle").GetComponent<ParticleSystem>();
+        DashParticle = transform.FindChild("dash_particle").GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -81,11 +88,11 @@ public class PlayerCharacter : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.A))
             {
-                MovementVector += new Vector2(-1,0);
+                MovementVector += new Vector2(-1, 0);
             }
             if (Input.GetKey(KeyCode.D))
             {
-                MovementVector += new Vector2(1,0);
+                MovementVector += new Vector2(1, 0);
             }
             MoveByStick(MovementVector);
         }
@@ -97,14 +104,14 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (InitialY < 9)
             {
-                if (InitialY - this.transform.position.y > 0.5f && this.transform.position.y < 0)
+                if (InitialY - this.transform.position.y > 0.1f && this.transform.position.y < 0)
                 {
                     Player.PushBehaviour(LockedBehaviour);
                     GetComponent<Rigidbody>().drag = 1;
-                    this.transform.position += new Vector3(0, -0.1f, 0.0f);
-                    if (this.transform.position.y < -3)
+                    this.transform.position += new Vector3(0, -0.2f, 0.0f);
+                    if (this.transform.position.y < -4.0)
                     {
-                        transform.GetComponent<BoxCollider>().enabled = false;
+                        transform.GetComponent<SphereCollider>().enabled = false;
                         //StartCoroutine(RespCorr());
                         if (OnPlayerDeath != null)
                         {
@@ -166,7 +173,7 @@ public class PlayerCharacter : MonoBehaviour
         if (axe)
         {
             //MeshColor.enabled = false;
-            transform.GetComponent<BoxCollider>().enabled = false;
+            transform.GetComponent<SphereCollider>().enabled = false;
             //StartCoroutine(RespCorr());
             if (OnPlayerDeath != null)
             {
@@ -195,7 +202,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         Obstacle OBS = collision.gameObject.GetComponent<Obstacle>();
         if (OBS)
-        {
+        {if (Obstacles == null) Obstacles = new List<Obstacle>();
             Obstacles.Add(OBS);
             if (IsPushed)
             {
@@ -285,7 +292,7 @@ public class PlayerCharacter : MonoBehaviour
     #region BehaviourDelegates
     void MoveByStick(Vector2 AxisVect)
     {
-        if (AxisVect.magnitude > 0)
+        if (AxisVect.magnitude > 0.02f)
         {
             Vector3 SpeedVect = new Vector3(AxisVect.x, 0, AxisVect.y);
             CharacterRigid.AddForce(SpeedVect * Speed);
@@ -293,10 +300,17 @@ public class PlayerCharacter : MonoBehaviour
             Vector3 lookPosition = this.transform.position + SpeedVect;
             this.transform.LookAt(lookPosition);
             Anim.SetInteger("AnimationState", 1);
-
+            if (!RunParticle.isPlaying)
+            {
+                RunParticle.Play();
+            }
+            Debug.Log("Run Dafukerino");
         }
-        else
+        if (CharacterRigid.velocity.magnitude < 0.1) 
         {
+            Debug.Log("AxisVect = "+ AxisVect);
+
+            RunParticle.Stop();
             Anim.SetInteger("AnimationState", 0);
         }
     }
@@ -330,7 +344,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         transform.gameObject.SetActive(true);
         //transform.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        transform.GetComponent<BoxCollider>().enabled = true;
+        transform.GetComponent<SphereCollider>().enabled = true;
 
     }
     private void EndGameButton(EButtonState buttonState)
@@ -345,6 +359,7 @@ public class PlayerCharacter : MonoBehaviour
             Debug.Log("Dash!");
             // if (this.gameObject.active)
             {
+                DashParticle.Play();
                 StartCoroutine(Dash());
             }
         }
