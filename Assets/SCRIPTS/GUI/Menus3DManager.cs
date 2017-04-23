@@ -54,7 +54,8 @@ public class Menus3DManager : MonoBehaviour
         // set default color
         base_color = Color.white;
         string hex_value;
-        hex_value = "#52463EFF";
+        //hex_value = "#52463EFF";
+        hex_value = "#806850FF";
         if (ColorUtility.TryParseHtmlString(hex_value, out base_color))
             Debug.Log("Color converted.");
 
@@ -119,6 +120,11 @@ public class Menus3DManager : MonoBehaviour
             if (Input.GetButtonDown(action_input_label + players[i].player_id))
             {
                 Debug.Log(action_input_label + players[i].player_id);
+
+                //restore default color
+                UpdateColor(menu_selection_id, base_color);
+
+                //move to new scene
                 ActivateSelection(menu_selection_id);
             }
 
