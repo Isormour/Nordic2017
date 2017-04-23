@@ -8,25 +8,41 @@ public class ButtonController : MonoBehaviour
     
     public void Action()
     {
-        if (button_type == "start")
-            StartGame();
+        if (button_type == "map")
+            Menus3DManager.Instance.MapSelection();
         if (button_type == "credits")
-            Credits();
+            Menus3DManager.Instance.Credits();
         if (button_type == "quit")
-            QuitGame();
+            Menus3DManager.Instance.QuitGame();
+        if (button_type == "main")
+            Menus3DManager.Instance.MainMenu();
+        if (button_type == "skin")
+            Menus3DManager.Instance.SkinSelection();
+        if (button_type == "start")
+            Menus3DManager.Instance.StartGame();
     }
 
-    public void StartGame()
-    {
-        GuiController.Instance.StartGame();
-    }
-    public void Credits()
-    {
-        Debug.Log("Not implemented.");
-        GuiController.Instance.QuitGame();
-    }
-    public void QuitGame()
-    {
-        GuiController.Instance.QuitGame();
-    }
+    //public void StartGame()
+    //{
+    //    //GuiController.Instance.StartGame();
+    //    //Transform target = Menu3dController.Instance.menu_camera.
+    //    //Menu3dController.Instance.menu_camera.set_mount();
+    //    Transform camera_mount = Menus3DManager.Instance.map_select_menu.camera_mount;
+    //    Menus3DManager.Instance.menu_camera.set_mount(camera_mount);
+    //}
+    //public void Credits()
+    //{
+    //    Debug.Log("Not implemented.");
+    //    GuiController.Instance.QuitGame();
+    //}
+    //public void QuitGame()
+    //{
+    //    GuiController.Instance.QuitGame();
+    //}
+    //public void MainMenu()
+    //{
+    //    Debug.Log("Not implemented.");
+    //    GuiController.Instance.QuitGame();
+    //}
+
 }
